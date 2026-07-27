@@ -36,11 +36,12 @@ model User {
   updatedAt     DateTime  @updatedAt
   deletedAt     DateTime?
 
-  accounts       Account[]
-  sessions       Session[]
-  organizations  OrganizationUser[]
-  auditLogs      AuditLog[]
-  securityEvents SecurityEvent[]
+  accounts           Account[]
+  sessions           Session[]
+  organizations      OrganizationUser[]
+  auditLogs          AuditLog[]
+  securityEvents     SecurityEvent[]
+  emailVerifications EmailVerification[]
 
   @@index([email])
 }
@@ -109,6 +110,33 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model PasswordReset {
+  id        String   @id @default(cuid())
+  email     String
+  token     String   @unique
+  expires   DateTime
+  usedAt    DateTime?
+  createdAt DateTime @default(now())
+
+  @@index([email])
+  @@index([token])
+}
+
+model EmailVerification {
+  id         String    @id @default(cuid())
+  userId     String
+  tokenHash  String    @unique
+  expires    DateTime
+  verifiedAt DateTime?
+  createdAt  DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([tokenHash])
+  @@index([expires])
 }
 
 // -----------------------------------------------------------------------------
