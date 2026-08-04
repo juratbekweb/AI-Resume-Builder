@@ -1,36 +1,52 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
-// Security headers wrapper middleware
-export default function proxy(req: NextRequest) {
-  const requestHeaders = new Headers(req.headers);
-  requestHeaders.set("x-request-id", crypto.randomUUID());
-
-  const response = NextResponse.next({
-    request: {
-      headers: requestHeaders,
-    },
-  });
+export default function proxy(request: NextRequest) {
+  const response = NextResponse.next();
 
   // Security Headers
   response.headers.set("X-Frame-Options", "DENY");
   response.headers.set("X-Content-Type-Options", "nosniff");
+  response.headers.set("X-XSS-Protection", "1; mode=block");
   response.headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
-  response.headers.set("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
+  response.headers.set("Permissions-Policy", "geolocation=(), microphone=(), camera=()");
+  
+  // HSTS (HTTP Strict Transport Security)
+  response.headers.set("Strict-Transport-Security", "max-age=31536000; includeSubDomains; preload");
+  
+  // CSP (Content Security Policy)
+  const csp = [
+    "default-src 'self'",
+    "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://js.stripe.com",
+    "style-src 'self' 'unsafe-inline'",
+    "img-src 'self' data: https: blob:",
+    "font-src 'self' data:",
+    "connect-src 'self' https://api.stripe.com",
+    "frame-src 'self' https://js.stripe.com",
+    "frame-ancestors 'none'",
+    "base-uri 'self'",
+    "form-action 'self'",
+  ].join("; ");
+  
+  response.headers.set("Content-Security-Policy", csp);
 
-  // CSRF for API routes (Simple example: origin checking is built into Next.js server actions,
-  // but for custom API routes, ensure they aren't hit cross-origin without CORS)
-  const origin = req.headers.get("origin");
-  const isApiRoute = req.nextUrl.pathname.startsWith("/api/");
-  if (isApiRoute && origin) {
-    const allowedOrigins = [process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"];
-    if (allowedOrigins.includes(origin)) {
-      response.headers.set("Access-Control-Allow-Origin", origin);
-    }
-  }
+  // Remove X-Powered-By header
+  response.headers.delete("X-Powered-By");
 
   return response;
 }
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
+  matcher: [
+    /*
+     * Apply security headers to page routes only, excluding:
+     * - _next/static (static files)
+     * - _next/image (image optimization)
+     * - favicon.ico
+     * - api/ (API routes - handled by Next.js)
+     * - auth/ (NextAuth routes - handled by NextAuth)
+     * - Static file extensions
+     */
+    "/((?!_next/static|_next/image|favicon\\.ico|api/|auth/|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico)$).*)",
+  ],
 };

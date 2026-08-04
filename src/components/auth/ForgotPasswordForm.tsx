@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { motion } from "motion/react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -84,9 +85,13 @@ export function ForgotPasswordForm({ onSubmit, onBackToLogin }: ForgotPasswordFo
       />
       <form onSubmit={handleSubmit(handleFormSubmit)} className="mt-8 space-y-6">
         {serverError ? (
-          <div className="rounded-xl border border-red-400/40 bg-red-500/10 p-4 text-sm text-red-200">
+          <motion.div 
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="rounded-xl border border-red-400/40 bg-red-500/10 p-4 text-sm text-red-200"
+          >
             {serverError}
-          </div>
+          </motion.div>
         ) : null}
         <div className="space-y-1.5">
           <label htmlFor="email" className="block text-sm font-medium text-slate-200">

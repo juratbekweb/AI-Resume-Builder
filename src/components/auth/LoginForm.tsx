@@ -2,6 +2,7 @@
 
 /* eslint-disable react-hooks/incompatible-library */
 import { useState } from "react";
+import { motion } from "motion/react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -73,9 +74,13 @@ export function LoginForm({ onLogin, onForgotPassword, onOAuthProviderClick }: L
       <AuthHeader title="Welcome back" subtitle="Sign in to continue to your dashboard" />
       <form onSubmit={handleSubmit(handleFormSubmit)} className="mt-8 space-y-6">
         {serverError ? (
-          <div className="rounded-xl border border-red-400/40 bg-red-500/10 p-4 text-sm text-red-200">
+          <motion.div 
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="rounded-xl border border-red-400/40 bg-red-500/10 p-4 text-sm text-red-200"
+          >
             {serverError}
-          </div>
+          </motion.div>
         ) : null}
         <div className="space-y-1.5">
           <label htmlFor="email" className="block text-sm font-medium text-slate-200">
@@ -88,7 +93,7 @@ export function LoginForm({ onLogin, onForgotPassword, onOAuthProviderClick }: L
             {...register("email")}
             aria-invalid={Boolean(errors.email)}
             aria-describedby={errors.email ? "email-error" : undefined}
-            className={`w-full rounded-xl border bg-slate-950/60 px-4 py-3 text-sm text-white transition placeholder:text-slate-500 focus:ring-2 focus:outline-none ${
+            className={`w-full rounded-xl border bg-slate-950/60 px-4 py-3 text-sm text-white transition placeholder:text-slate-500 focus:ring-2 focus:outline-none premium-input ${
               errors.email
                 ? "border-red-400/80 focus:border-red-300 focus:ring-red-500/40"
                 : "border-white/10 focus:border-cyan-400/80 focus:ring-cyan-500/40"
@@ -134,7 +139,7 @@ export function LoginForm({ onLogin, onForgotPassword, onOAuthProviderClick }: L
         <button
           type="submit"
           disabled={loading}
-          className="w-full rounded-full bg-cyan-400 px-6 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-300 disabled:cursor-not-allowed disabled:opacity-70"
+          className="w-full rounded-full bg-gradient-to-r from-cyan-500 to-blue-600 px-6 py-3 text-sm font-semibold text-white transition-all hover:from-cyan-400 hover:to-blue-500 disabled:cursor-not-allowed disabled:opacity-70 shadow-lg shadow-cyan-500/50 hover:shadow-cyan-500/70 hover:scale-[1.02] premium-button"
         >
           {loading ? "Signing in..." : "Sign in"}
         </button>

@@ -1,8 +1,12 @@
 import { randomBytes } from "crypto";
-import { hash, compare } from "bcryptjs";
+import { hash } from "bcryptjs";
 
 export interface PasswordResetRepository {
-  create(input: { email: string; token: string; expiresAt: Date }): Promise<unknown>;
+  create(input: {
+    email: string;
+    token: string;
+    expiresAt: Date;
+  }): Promise<unknown>;
   findValidToken(token: string): Promise<unknown | null>;
   markUsed(token: string): Promise<unknown>;
   invalidateAllForEmail(email: string): Promise<unknown>;
@@ -43,7 +47,9 @@ export class PasswordResetService {
       throw new Error("Invalid or expired reset token");
     }
 
-    const hashedPassword = await hash(newPassword, 10);
+    void newPassword;
+
+
 
     // In a real implementation, you would:
     // 1. Update the user's passwordHash with hashedPassword

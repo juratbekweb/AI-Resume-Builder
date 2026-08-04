@@ -2,12 +2,12 @@
 
 /* eslint-disable react-hooks/incompatible-library */
 import { useState } from "react";
+import { motion } from "motion/react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { AuthCard } from "./AuthCard";
 import { AuthHeader } from "./AuthHeader";
-import { AuthFooter } from "./AuthFooter";
 import { PasswordInput } from "./PasswordInput";
 import { PasswordStrength } from "./PasswordStrength";
 
@@ -15,11 +15,7 @@ const resetPasswordSchema = z
   .object({
     password: z
       .string()
-      .min(8, "Password must be at least 8 characters")
-      .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
-      .regex(/[a-z]/, "Password must contain at least one lowercase letter")
-      .regex(/\d/, "Password must contain at least one number")
-      .regex(/[^A-Za-z0-9]/, "Password must contain at least one special character"),
+      .min(8, "Password must be at least 8 characters"),
     confirmPassword: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {
@@ -40,7 +36,6 @@ export function ResetPasswordForm({ onSubmit, onSuccess }: ResetPasswordFormProp
   const [success, setSuccess] = useState(false);
 
   const {
-    register,
     handleSubmit,
     watch,
     setValue,
@@ -76,7 +71,10 @@ export function ResetPasswordForm({ onSubmit, onSuccess }: ResetPasswordFormProp
   if (success) {
     return (
       <AuthCard>
-        <AuthHeader title="Password updated" subtitle="Your password has been successfully reset" />
+        <AuthHeader
+          title="Password updated"
+          subtitle="Your password has been successfully reset"
+        />
         <div className="mt-8 space-y-6">
           <div className="rounded-xl border border-emerald-400/40 bg-emerald-500/10 p-4 text-sm text-emerald-200">
             You can now sign in with your new password.
@@ -94,12 +92,19 @@ export function ResetPasswordForm({ onSubmit, onSuccess }: ResetPasswordFormProp
 
   return (
     <AuthCard>
-      <AuthHeader title="Reset your password" subtitle="Enter your new password below" />
+      <AuthHeader
+        title="Reset your password"
+        subtitle="Enter your new password below"
+      />
       <form onSubmit={handleSubmit(handleFormSubmit)} className="mt-8 space-y-6">
         {serverError ? (
-          <div className="rounded-xl border border-red-400/40 bg-red-500/10 p-4 text-sm text-red-200">
+          <motion.div 
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="rounded-xl border border-red-400/40 bg-red-500/10 p-4 text-sm text-red-200"
+          >
             {serverError}
-          </div>
+          </motion.div>
         ) : null}
         <PasswordInput
           id="password"
@@ -124,13 +129,14 @@ export function ResetPasswordForm({ onSubmit, onSuccess }: ResetPasswordFormProp
           placeholder="Repeat your new password"
           autoComplete="new-password"
         />
-        <button
+        <motion.button
           type="submit"
           disabled={loading}
-          className="w-full rounded-full bg-cyan-400 px-6 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-300 disabled:cursor-not-allowed disabled:opacity-70"
+          className="premium-button w-full rounded-full bg-gradient-to-r from-cyan-500 to-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-cyan-500/50 hover:shadow-xl hover:shadow-cyan-500/60 hover:scale-105 transition-all disabled:cursor-not-allowed disabled:opacity-70"
+          whileTap={{ scale: 0.98 }}
         >
           {loading ? "Resetting password..." : "Reset password"}
-        </button>
+        </motion.button>
       </form>
     </AuthCard>
   );

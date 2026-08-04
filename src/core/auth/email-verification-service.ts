@@ -1,10 +1,13 @@
 import { randomBytes } from "crypto";
 import { hash } from "bcryptjs";
-import { prisma } from "../../lib/prisma";
 import type { MailService } from "./mail-service";
 
 export interface EmailVerificationRepository {
-  create(input: { userId: string; tokenHash: string; expiresAt: Date }): Promise<unknown>;
+  create(input: {
+    userId: string;
+    tokenHash: string;
+    expiresAt: Date;
+  }): Promise<unknown>;
   findValidToken(tokenHash: string): Promise<unknown | null>;
   markVerified(tokenHash: string): Promise<unknown>;
   invalidateAllForUser(userId: string): Promise<unknown>;

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { motion } from "motion/react";
 
 type PasswordInputProps = {
   id: string;
@@ -44,19 +45,25 @@ export function PasswordInput({
               : "border-white/10 focus:border-cyan-400/80 focus:ring-cyan-500/40"
           }`}
         />
-        <button
+        <motion.button
           type="button"
           onClick={() => setVisible((prev) => !prev)}
           aria-label={visible ? "Hide password" : "Show password"}
           className="absolute inset-y-0 right-3 inline-flex items-center text-xs font-medium text-slate-400 transition hover:text-white"
+          whileTap={{ scale: 0.95 }}
         >
           {visible ? "Hide" : "Show"}
-        </button>
+        </motion.button>
       </div>
       {error ? (
-        <p id={`${id}-error`} className="text-xs text-red-300">
+        <motion.p
+          id={`${id}-error`}
+          initial={{ opacity: 0, y: -5 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-xs text-red-300"
+        >
           {error}
-        </p>
+        </motion.p>
       ) : null}
     </div>
   );

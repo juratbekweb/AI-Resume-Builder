@@ -5,5 +5,18 @@ export const authConfig = {
   pages: {
     signIn: "/login",
   },
-  callbacks: {},
+  callbacks: {
+    async session({ session, token }) {
+      if (session.user) {
+        (session.user as any).role = token.role;
+      }
+      return session;
+    },
+    async jwt({ token, user }) {
+      if (user) {
+        token.role = (user as any).role;
+      }
+      return token;
+    },
+  },
 } satisfies AuthOptions;

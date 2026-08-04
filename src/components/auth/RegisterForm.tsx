@@ -2,6 +2,7 @@
 
 /* eslint-disable react-hooks/incompatible-library */
 import { useState } from "react";
+import { motion } from "motion/react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -22,13 +23,10 @@ const registerSchema = z
       .min(2, "Last name must be at least 2 characters")
       .max(50, "Last name must be less than 50 characters"),
     email: z.string().email("Please enter a valid email address"),
+    phone: z.string().min(9, "Phone number must be at least 9 characters"),
     password: z
       .string()
-      .min(8, "Password must be at least 8 characters")
-      .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
-      .regex(/[a-z]/, "Password must contain at least one lowercase letter")
-      .regex(/\d/, "Password must contain at least one number")
-      .regex(/[^A-Za-z0-9]/, "Password must contain at least one special character"),
+      .min(8, "Password must be at least 8 characters"),
     confirmPassword: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {
@@ -43,6 +41,7 @@ type RegisterFormProps = {
     firstName: string;
     lastName: string;
     email: string;
+    phone: string;
     password: string;
   }) => Promise<void> | void;
 };
@@ -72,6 +71,7 @@ export function RegisterForm({ onSubmit }: RegisterFormProps) {
         firstName: data.firstName,
         lastName: data.lastName,
         email: data.email,
+        phone: data.phone,
         password: data.password,
       });
     } catch (error) {
@@ -91,9 +91,13 @@ export function RegisterForm({ onSubmit }: RegisterFormProps) {
       />
       <form onSubmit={handleSubmit(handleFormSubmit)} className="mt-8 space-y-6">
         {serverError ? (
-          <div className="rounded-xl border border-red-400/40 bg-red-500/10 p-4 text-sm text-red-200">
+          <motion.div 
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="rounded-xl border border-red-400/40 bg-red-500/10 p-4 text-sm text-red-200"
+          >
             {serverError}
-          </div>
+          </motion.div>
         ) : null}
         <div className="grid gap-4 sm:grid-cols-2">
           <div className="space-y-1.5">
@@ -107,7 +111,7 @@ export function RegisterForm({ onSubmit }: RegisterFormProps) {
               {...register("firstName")}
               aria-invalid={Boolean(errors.firstName)}
               aria-describedby={errors.firstName ? "firstName-error" : undefined}
-              className={`w-full rounded-xl border bg-slate-950/60 px-4 py-3 text-sm text-white transition placeholder:text-slate-500 focus:ring-2 focus:outline-none ${
+              className={`w-full rounded-xl border bg-slate-950/60 px-4 py-3 text-sm text-white transition placeholder:text-slate-500 focus:ring-2 focus:outline-none premium-input ${
                 errors.firstName
                   ? "border-red-400/80 focus:border-red-300 focus:ring-red-500/40"
                   : "border-white/10 focus:border-cyan-400/80 focus:ring-cyan-500/40"
@@ -131,7 +135,7 @@ export function RegisterForm({ onSubmit }: RegisterFormProps) {
               {...register("lastName")}
               aria-invalid={Boolean(errors.lastName)}
               aria-describedby={errors.lastName ? "lastName-error" : undefined}
-              className={`w-full rounded-xl border bg-slate-950/60 px-4 py-3 text-sm text-white transition placeholder:text-slate-500 focus:ring-2 focus:outline-none ${
+              className={`w-full rounded-xl border bg-slate-950/60 px-4 py-3 text-sm text-white transition placeholder:text-slate-500 focus:ring-2 focus:outline-none premium-input ${
                 errors.lastName
                   ? "border-red-400/80 focus:border-red-300 focus:ring-red-500/40"
                   : "border-white/10 focus:border-cyan-400/80 focus:ring-cyan-500/40"
@@ -145,30 +149,51 @@ export function RegisterForm({ onSubmit }: RegisterFormProps) {
             ) : null}
           </div>
         </div>
-        <div className="space-y-1.5">
-          <label htmlFor="email" className="block text-sm font-medium text-slate-200">
-            Email
-          </label>
-          <input
-            id="email"
-            type="email"
-            autoComplete="email"
-            {...register("email")}
-            aria-invalid={Boolean(errors.email)}
-            aria-describedby={errors.email ? "email-error" : undefined}
-            className={`w-full rounded-xl border bg-slate-950/60 px-4 py-3 text-sm text-white transition placeholder:text-slate-500 focus:ring-2 focus:outline-none ${
-              errors.email
-                ? "border-red-400/80 focus:border-red-300 focus:ring-red-500/40"
-                : "border-white/10 focus:border-cyan-400/80 focus:ring-cyan-500/40"
-            }`}
-            placeholder="you@example.com"
-          />
-          {errors.email ? (
-            <p id="email-error" className="text-xs text-red-300">
-              {errors.email.message}
-            </p>
-          ) : null}
-        </div>
+        <div>
+            <label htmlFor="email" className="block text-sm font-medium text-slate-300">
+              Email / Gmail <span className="text-red-400">*</span>
+            </label>
+            <div className="mt-1 relative">
+              <input
+                id="email"
+                type="email"
+                autoComplete="email"
+                className={`block w-full appearance-none rounded-xl border bg-slate-950/50 px-4 py-3 placeholder-slate-500 shadow-sm transition-all focus:outline-none focus:ring-2 sm:text-sm ${
+                  errors.email
+                    ? "border-red-400 focus:border-red-400 focus:ring-red-400/20"
+                    : "border-slate-700 focus:border-cyan-400 focus:ring-cyan-400/20"
+                }`}
+                placeholder="example@gmail.com"
+                {...register("email")}
+              />
+              {errors.email && (
+                <p className="mt-1 text-xs text-red-400">{errors.email.message}</p>
+              )}
+            </div>
+          </div>
+
+          <div>
+            <label htmlFor="phone" className="block text-sm font-medium text-slate-300">
+              Telefon raqam <span className="text-red-400">*</span>
+            </label>
+            <div className="mt-1 relative">
+              <input
+                id="phone"
+                type="tel"
+                autoComplete="tel"
+                className={`block w-full appearance-none rounded-xl border bg-slate-950/50 px-4 py-3 placeholder-slate-500 shadow-sm transition-all focus:outline-none focus:ring-2 sm:text-sm ${
+                  errors.phone
+                    ? "border-red-400 focus:border-red-400 focus:ring-red-400/20"
+                    : "border-slate-700 focus:border-cyan-400 focus:ring-cyan-400/20"
+                }`}
+                placeholder="+998 90 123 45 67"
+                {...register("phone")}
+              />
+              {errors.phone && (
+                <p className="mt-1 text-xs text-red-400">{errors.phone.message}</p>
+              )}
+            </div>
+          </div>
         <PasswordInput
           id="password"
           label="Password"
@@ -195,7 +220,7 @@ export function RegisterForm({ onSubmit }: RegisterFormProps) {
         <button
           type="submit"
           disabled={loading}
-          className="w-full rounded-full bg-cyan-400 px-6 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-300 disabled:cursor-not-allowed disabled:opacity-70"
+          className="w-full rounded-full bg-gradient-to-r from-cyan-500 to-blue-600 px-6 py-3 text-sm font-semibold text-white transition-all hover:from-cyan-400 hover:to-blue-500 disabled:cursor-not-allowed disabled:opacity-70 shadow-lg shadow-cyan-500/50 hover:shadow-cyan-500/70 hover:scale-[1.02] premium-button"
         >
           {loading ? "Creating account..." : "Create account"}
         </button>
