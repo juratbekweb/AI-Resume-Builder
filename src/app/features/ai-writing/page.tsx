@@ -1,10 +1,11 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Brain, Sparkles, Copy, Check, RefreshCw, Zap, ArrowRight, Lightbulb, ChevronRight } from 'lucide-react';
+import { Brain, Sparkles, Copy, Check, RefreshCw, Zap, Lightbulb, ChevronRight } from 'lucide-react';
 import { useLanguage } from '@/components/providers/language-provider';
 import { PaywallModal } from '@/components/shared/paywall-modal';
+import { useSubscription } from '@/components/providers/subscription-provider';
 
 export default function AIWritingPage() {
   const { t, lang } = useLanguage();
@@ -222,16 +223,16 @@ export default function AIWritingPage() {
   const [streamIndex, setStreamIndex] = useState(0);
   const [showPaywall, setShowPaywall] = useState(false);
 
+  const { isPremium } = useSubscription();
+
   const handleImprove = async () => {
     if (!input.trim()) return;
 
-    const usageStr = localStorage.getItem('gopay_ai_usage');
-    const usage = usageStr ? parseInt(usageStr, 10) : 0;
-    if (usage >= 1) {
+    // Use secure server-provided subscription state instead of localStorage hack
+    if (!isPremium) {
       setShowPaywall(true);
       return;
     }
-    localStorage.setItem('gopay_ai_usage', (usage + 1).toString());
 
     setIsLoading(true);
     setOutput([]);
@@ -241,7 +242,7 @@ export default function AIWritingPage() {
     await new Promise(r => setTimeout(r, 1400));
     
     const key = Object.keys(aiOutputs).find(k => jobTitle.toLowerCase().includes(k.toLowerCase().split(' ').pop() ?? '')) ?? Object.keys(aiOutputs)[0];
-    const bullets = (aiOutputs as Record<string, string[]>)[key] ?? (aiOutputs as Record<string, string[]>)[Object.keys(aiOutputs)[0]];
+    const bullets = (aiOutputs as unknown as Record<string, string[]>)[key] ?? (aiOutputs as unknown as Record<string, string[]>)[Object.keys(aiOutputs)[0]];
     setOutput(bullets);
     setIsLoading(false);
   };
@@ -273,32 +274,32 @@ export default function AIWritingPage() {
   const wordCount = input.trim().split(/\s+/).filter(Boolean).length;
 
   return (
-    <div className="min-h-screen bg-slate-950 pb-20">
+    <div className="pb-20">
       <PaywallModal isOpen={showPaywall} onClose={() => setShowPaywall(false)} />
       {/* Hero */}
-      <div className="relative overflow-hidden border-b border-white/8">
+      <div className="relative overflow-hidden border-b border-border">
         <div className="pointer-events-none absolute inset-0">
-          <div className="absolute left-1/4 top-0 h-72 w-72 rounded-full bg-cyan-500/10 blur-3xl" />
+          <div className="absolute left-1/4 top-0 h-72 w-72 rounded-full bg-primary/10 blur-3xl" />
           <div className="absolute right-1/4 bottom-0 h-72 w-72 rounded-full bg-blue-600/10 blur-3xl" />
         </div>
         <div className="relative mx-auto max-w-7xl px-6 py-12 sm:px-8">
           <div className="flex items-center gap-3 mb-4">
-            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-500/20 to-sky-500/10 border border-cyan-400/30">
-              <Brain className="h-6 w-6 text-cyan-400" />
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-primary/20 to-sky-500/10 border border-primary/30">
+              <Brain className="h-6 w-6 text-primary" />
             </div>
             <div>
-              <div className="text-xs font-semibold uppercase tracking-widest text-cyan-400">{t.aiFeature}</div>
-              <h1 className="text-2xl font-bold text-white">{t.aiWritingTitle}</h1>
+              <div className="text-xs font-semibold uppercase tracking-widest text-primary">{t.aiFeature}</div>
+              <h1 className="text-2xl font-bold text-foreground">{t.aiWritingTitle}</h1>
             </div>
           </div>
-          <p className="text-slate-400 max-w-2xl">{t.aiWritingDesc}</p>
+          <p className="text-foreground-secondary max-w-2xl">{t.aiWritingDesc}</p>
         </div>
       </div>
 
       <div className="mx-auto max-w-7xl px-6 py-10 sm:px-8">
         {/* Example presets */}
         <div className="mb-8">
-          <p className="text-xs font-semibold uppercase tracking-widest text-slate-500 mb-3">{t.tryExample}</p>
+          <p className="text-xs font-semibold uppercase tracking-widest text-foreground-secondary mb-3">{t.tryExample}</p>
           <div className="flex flex-wrap gap-2">
             {examples.map((ex, i) => (
               <button
@@ -306,8 +307,8 @@ export default function AIWritingPage() {
                 onClick={() => handleExample(i)}
                 className={`rounded-full border px-4 py-1.5 text-sm font-medium transition-all ${
                   activeExample === i
-                    ? 'border-cyan-400/60 bg-cyan-400/15 text-cyan-300'
-                    : 'border-white/10 bg-white/5 text-slate-400 hover:border-white/20 hover:text-white'
+                    ? 'border-primary/60 bg-primary/15 text-primary'
+                    : 'border-border bg-surface text-foreground-secondary hover:border-border hover:text-foreground'
                 }`}
               >
                 {ex.label}
@@ -316,35 +317,35 @@ export default function AIWritingPage() {
           </div>
         </div>
 
-        <div className="grid gap-6 lg:grid-cols-[1fr_1fr_240px]">
+        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-[1.2fr_1.5fr_300px]">
           {/* Input */}
           <div className="space-y-4">
-            <div className="rounded-2xl border border-white/10 bg-slate-900/60 p-5 backdrop-blur-sm">
-              <label className="mb-2 block text-sm font-semibold text-white">{t.jobTitle}</label>
+            <div className="rounded-2xl border border-border bg-surface-elevated p-5 backdrop-blur-sm">
+              <label className="mb-2 block text-sm font-semibold text-foreground">{t.jobTitle}</label>
               <input
                 value={jobTitle}
                 onChange={e => setJobTitle(e.target.value)}
                 placeholder="e.g. Senior Software Engineer"
-                className="w-full rounded-xl border border-white/10 bg-slate-800/60 px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:border-cyan-400/50 focus:outline-none focus:ring-1 focus:ring-cyan-400/30"
+                className="w-full rounded-xl border border-border bg-surface-elevated px-4 py-2.5 text-sm text-foreground placeholder-slate-500 focus:border-primary/50 focus:outline-none focus:ring-1 focus:ring-primary/30"
               />
             </div>
-            <div className="rounded-2xl border border-white/10 bg-slate-900/60 p-5 backdrop-blur-sm">
+            <div className="rounded-2xl border border-border bg-surface-elevated p-5 backdrop-blur-sm">
               <div className="mb-2 flex items-center justify-between">
-                <label className="text-sm font-semibold text-white">{t.roughNotes}</label>
-                <span className="text-xs text-slate-500">{wordCount} {t.words}</span>
+                <label className="text-sm font-semibold text-foreground">{t.roughNotes}</label>
+                <span className="text-xs text-foreground-secondary">{wordCount} {t.words}</span>
               </div>
               <textarea
                 value={input}
                 onChange={e => setInput(e.target.value)}
                 placeholder="Paste your rough experience notes here... e.g. 'worked on backend, fixed bugs, helped with deployments'"
                 rows={8}
-                className="w-full resize-none rounded-xl border border-white/10 bg-slate-800/60 px-4 py-3 text-sm text-white placeholder-slate-500 focus:border-cyan-400/50 focus:outline-none focus:ring-1 focus:ring-cyan-400/30"
+                className="w-full resize-none rounded-xl border border-border bg-surface-elevated px-4 py-3 text-sm text-foreground placeholder-slate-500 focus:border-primary/50 focus:outline-none focus:ring-1 focus:ring-primary/30"
               />
               <div className="mt-3 flex gap-2">
                 <button
                   onClick={handleImprove}
                   disabled={!input.trim() || isLoading}
-                  className="premium-button flex flex-1 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 py-2.5 text-sm font-semibold text-white shadow-lg shadow-cyan-500/30 hover:from-cyan-400 hover:to-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                  className="premium-button flex flex-1 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-primary to-blue-600 py-2.5 text-sm font-semibold text-foreground shadow-lg shadow-primary/30 hover:from-primary hover:to-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                 >
                   {isLoading ? (
                     <span className="flex items-center gap-2"><RefreshCw className="h-4 w-4 animate-spin" /> {t.improving}</span>
@@ -354,7 +355,7 @@ export default function AIWritingPage() {
                 </button>
                 <button
                   onClick={() => { setInput(''); setOutput([]); setDisplayedOutput([]); setActiveExample(null); }}
-                  className="rounded-xl border border-white/10 px-4 py-2.5 text-sm text-slate-400 hover:border-white/20 hover:text-white transition-colors"
+                  className="rounded-xl border border-border px-4 py-2.5 text-sm text-foreground-secondary hover:border-border hover:text-foreground transition-colors"
                 >
                   {t.clear}
                 </button>
@@ -363,17 +364,17 @@ export default function AIWritingPage() {
           </div>
 
           {/* Output */}
-          <div className="rounded-2xl border border-white/10 bg-slate-900/60 p-5 backdrop-blur-sm">
+          <div className="rounded-2xl border border-border bg-surface-elevated p-5 backdrop-blur-sm">
             <div className="mb-4 flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Zap className="h-4 w-4 text-cyan-400" />
-                <span className="text-sm font-semibold text-white">{t.aiOutput}</span>
+                <Zap className="h-4 w-4 text-primary" />
+                <span className="text-sm font-semibold text-foreground">{t.aiOutput}</span>
                 {displayedOutput.length > 0 && (
                   <span className="rounded-full bg-emerald-500/15 px-2 py-0.5 text-xs font-semibold text-emerald-400">{t.stronger}</span>
                 )}
               </div>
               {displayedOutput.length > 0 && (
-                <button onClick={handleCopy} className="flex items-center gap-1.5 rounded-lg border border-white/10 px-3 py-1.5 text-xs text-slate-400 hover:border-white/20 hover:text-white transition-colors">
+                <button onClick={handleCopy} className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-xs text-foreground-secondary hover:border-border hover:text-foreground transition-colors">
                   {isCopied ? <span className="flex items-center gap-1.5"><Check className="h-3.5 w-3.5 text-emerald-400" /> {t.copied}</span> : <span className="flex items-center gap-1.5"><Copy className="h-3.5 w-3.5" /> {t.copy}</span>}
                 </button>
               )}
@@ -382,17 +383,17 @@ export default function AIWritingPage() {
             {isLoading && (
               <div className="flex flex-col gap-3">
                 {[1,2,3,4].map(i => (
-                  <div key={i} className="h-12 animate-pulse rounded-xl bg-slate-800/80" style={{ width: `${85 - i * 5}%` }} />
+                  <div key={i} className="h-12 animate-pulse rounded-xl bg-surface-elevated" style={{ width: `${85 - i * 5}%` }} />
                 ))}
               </div>
             )}
 
             {!isLoading && displayedOutput.length === 0 && (
               <div className="flex h-48 flex-col items-center justify-center gap-3 text-center">
-                <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-white/10 bg-slate-800/60">
-                  <Brain className="h-7 w-7 text-slate-600" />
+                <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-border bg-surface-elevated">
+                  <Brain className="h-7 w-7 text-foreground-secondary" />
                 </div>
-                <p className="text-sm text-slate-500">{t.outputPlaceholder}</p>
+                <p className="text-sm text-foreground-secondary">{t.outputPlaceholder}</p>
               </div>
             )}
 
@@ -403,7 +404,7 @@ export default function AIWritingPage() {
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.4 }}
-                  className="mb-3 rounded-xl border border-emerald-400/15 bg-emerald-400/5 p-4 text-sm leading-7 text-slate-200"
+                  className="mb-3 rounded-xl border border-emerald-400/15 bg-emerald-400/5 p-4 text-sm leading-7 text-foreground"
                 >
                   {bullet}
                 </motion.div>
@@ -412,22 +413,22 @@ export default function AIWritingPage() {
           </div>
 
           {/* Tips sidebar */}
-          <div className="rounded-2xl border border-white/10 bg-slate-900/60 p-5 backdrop-blur-sm">
+          <div className="rounded-2xl border border-border bg-surface-elevated p-5 backdrop-blur-sm">
             <div className="mb-4 flex items-center gap-2">
               <Lightbulb className="h-4 w-4 text-yellow-400" />
-              <span className="text-sm font-semibold text-white">{t.writingTips}</span>
+              <span className="text-sm font-semibold text-foreground">{t.writingTips}</span>
             </div>
             <div className="space-y-3">
               {tips.map((tip, i) => (
                 <div key={i} className="flex gap-2.5">
-                  <ChevronRight className="mt-0.5 h-3.5 w-3.5 flex-shrink-0 text-cyan-400" />
-                  <p className="text-xs leading-5 text-slate-400">{tip}</p>
+                  <ChevronRight className="mt-0.5 h-3.5 w-3.5 flex-shrink-0 text-primary" />
+                  <p className="text-xs leading-5 text-foreground-secondary">{tip}</p>
                 </div>
               ))}
             </div>
-            <div className="mt-6 rounded-xl border border-cyan-400/20 bg-cyan-400/5 p-4">
-              <p className="text-xs font-semibold text-cyan-300 mb-1">{t.proTip}</p>
-              <p className="text-xs text-slate-400 leading-5">{t.proTipText}</p>
+            <div className="mt-6 rounded-xl border border-primary/20 bg-primary/5 p-4">
+              <p className="text-xs font-semibold text-primary mb-1">{t.proTip}</p>
+              <p className="text-xs text-foreground-secondary leading-5">{t.proTipText}</p>
             </div>
           </div>
         </div>

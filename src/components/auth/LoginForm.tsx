@@ -83,7 +83,7 @@ export function LoginForm({ onLogin, onForgotPassword, onOAuthProviderClick }: L
           </motion.div>
         ) : null}
         <div className="space-y-1.5">
-          <label htmlFor="email" className="block text-sm font-medium text-slate-200">
+          <label htmlFor="email" className="block text-sm font-medium text-foreground-secondary">
             Email
           </label>
           <input
@@ -93,29 +93,29 @@ export function LoginForm({ onLogin, onForgotPassword, onOAuthProviderClick }: L
             {...register("email")}
             aria-invalid={Boolean(errors.email)}
             aria-describedby={errors.email ? "email-error" : undefined}
-            className={`w-full rounded-xl border bg-slate-950/60 px-4 py-3 text-sm text-white transition placeholder:text-slate-500 focus:ring-2 focus:outline-none premium-input ${
+            className={`w-full rounded-xl border bg-surface px-4 py-3 text-sm text-foreground transition placeholder:text-foreground-secondary/50 focus:ring-1 focus:outline-none premium-input ${
               errors.email
-                ? "border-red-400/80 focus:border-red-300 focus:ring-red-500/40"
-                : "border-white/10 focus:border-cyan-400/80 focus:ring-cyan-500/40"
+                ? "border-red-400/80 focus:border-red-400 focus:ring-red-400/40"
+                : "border-border focus:border-primary focus:ring-primary/40"
             }`}
             placeholder="you@example.com"
           />
           {errors.email ? (
-            <p id="email-error" className="text-xs text-red-300">
+            <p id="email-error" className="text-xs text-red-400">
               {errors.email.message}
             </p>
           ) : null}
         </div>
         <div className="space-y-1.5">
           <div className="flex items-center justify-between">
-            <label htmlFor="password" className="block text-sm font-medium text-slate-200">
+            <label htmlFor="password" className="block text-sm font-medium text-foreground-secondary">
               Password
             </label>
             {onForgotPassword ? (
               <button
                 type="button"
                 onClick={onForgotPassword}
-                className="text-xs font-medium text-cyan-300 transition hover:text-cyan-200"
+                className="text-xs font-medium text-primary transition hover:text-primary/80"
               >
                 Forgot password?
               </button>
@@ -139,7 +139,7 @@ export function LoginForm({ onLogin, onForgotPassword, onOAuthProviderClick }: L
         <button
           type="submit"
           disabled={loading}
-          className="w-full rounded-full bg-gradient-to-r from-cyan-500 to-blue-600 px-6 py-3 text-sm font-semibold text-white transition-all hover:from-cyan-400 hover:to-blue-500 disabled:cursor-not-allowed disabled:opacity-70 shadow-lg shadow-cyan-500/50 hover:shadow-cyan-500/70 hover:scale-[1.02] premium-button"
+          className="w-full rounded-full bg-primary px-6 py-3 text-sm font-bold text-primary-foreground transition-all hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-70 shadow-lg shadow-primary/20 hover:shadow-primary/40 hover:-translate-y-0.5 premium-button"
         >
           {loading ? "Signing in..." : "Sign in"}
         </button>
@@ -148,10 +148,10 @@ export function LoginForm({ onLogin, onForgotPassword, onOAuthProviderClick }: L
         <div className="mt-6">
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-white/10" />
+              <div className="w-full border-t border-border" />
             </div>
-            <div className="relative flex justify-center text-xs tracking-wider text-slate-500 uppercase">
-              <span className="bg-slate-900/80 px-2">Or continue with</span>
+            <div className="relative flex justify-center text-xs tracking-wider text-foreground-secondary uppercase">
+              <span className="bg-surface px-2">Or continue with</span>
             </div>
           </div>
           <div className="mt-4">

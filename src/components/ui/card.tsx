@@ -9,9 +9,9 @@ const cardVariants = cva(
       variant: {
         default: "border-border bg-surface",
         elevated: "border-border bg-surface-elevated shadow-lg",
-        glass: "glass border-white/10",
-        premium: "premium-card border-cyan-400/30 bg-gradient-to-br from-slate-900/90 to-slate-950/90",
-        gradient: "border-white/10 bg-gradient-to-br from-cyan-500/10 via-slate-900 to-slate-950",
+        glass: "glass border-border",
+        premium: "premium-card border-cyan-400/30 bg-surface-elevated",
+        gradient: "border-border bg-gradient-to-br from-primary/10 via-surface to-background",
       },
     },
     defaultVariants: {

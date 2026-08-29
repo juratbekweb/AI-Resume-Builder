@@ -19,7 +19,7 @@ export function OAuthButtons({ onProviderClick }: OAuthButtonsProps) {
           key={provider.id}
           type="button"
           onClick={() => onProviderClick(provider.id)}
-          className="premium-button flex w-full items-center justify-center gap-2 rounded-full border border-white/10 bg-slate-950/60 px-4 py-3 text-sm font-medium text-white transition-all hover:border-cyan-400/30 hover:bg-slate-900/60 hover:scale-[1.02]"
+          className="premium-button flex w-full items-center justify-center gap-2 rounded-full border border-border bg-surface px-4 py-3 text-sm font-medium text-foreground transition-all hover:border-primary/30 hover:bg-surface-elevated hover:scale-[1.02]"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: index * 0.1 }}

@@ -101,7 +101,7 @@ export function RegisterForm({ onSubmit }: RegisterFormProps) {
         ) : null}
         <div className="grid gap-4 sm:grid-cols-2">
           <div className="space-y-1.5">
-            <label htmlFor="firstName" className="block text-sm font-medium text-slate-200">
+            <label htmlFor="firstName" className="block text-sm font-medium text-foreground-secondary">
               First name
             </label>
             <input
@@ -111,21 +111,21 @@ export function RegisterForm({ onSubmit }: RegisterFormProps) {
               {...register("firstName")}
               aria-invalid={Boolean(errors.firstName)}
               aria-describedby={errors.firstName ? "firstName-error" : undefined}
-              className={`w-full rounded-xl border bg-slate-950/60 px-4 py-3 text-sm text-white transition placeholder:text-slate-500 focus:ring-2 focus:outline-none premium-input ${
+              className={`w-full rounded-xl border bg-surface px-4 py-3 text-sm text-foreground transition placeholder:text-foreground-secondary/50 focus:ring-1 focus:outline-none premium-input ${
                 errors.firstName
-                  ? "border-red-400/80 focus:border-red-300 focus:ring-red-500/40"
-                  : "border-white/10 focus:border-cyan-400/80 focus:ring-cyan-500/40"
+                  ? "border-red-400 focus:border-red-400 focus:ring-red-400/40"
+                  : "border-border focus:border-primary focus:ring-primary/40"
               }`}
               placeholder="Jane"
             />
             {errors.firstName ? (
-              <p id="firstName-error" className="text-xs text-red-300">
+              <p id="firstName-error" className="text-xs text-red-400">
                 {errors.firstName.message}
               </p>
             ) : null}
           </div>
           <div className="space-y-1.5">
-            <label htmlFor="lastName" className="block text-sm font-medium text-slate-200">
+            <label htmlFor="lastName" className="block text-sm font-medium text-foreground-secondary">
               Last name
             </label>
             <input
@@ -135,22 +135,22 @@ export function RegisterForm({ onSubmit }: RegisterFormProps) {
               {...register("lastName")}
               aria-invalid={Boolean(errors.lastName)}
               aria-describedby={errors.lastName ? "lastName-error" : undefined}
-              className={`w-full rounded-xl border bg-slate-950/60 px-4 py-3 text-sm text-white transition placeholder:text-slate-500 focus:ring-2 focus:outline-none premium-input ${
+              className={`w-full rounded-xl border bg-surface px-4 py-3 text-sm text-foreground transition placeholder:text-foreground-secondary/50 focus:ring-1 focus:outline-none premium-input ${
                 errors.lastName
-                  ? "border-red-400/80 focus:border-red-300 focus:ring-red-500/40"
-                  : "border-white/10 focus:border-cyan-400/80 focus:ring-cyan-500/40"
+                  ? "border-red-400 focus:border-red-400 focus:ring-red-400/40"
+                  : "border-border focus:border-primary focus:ring-primary/40"
               }`}
               placeholder="Doe"
             />
             {errors.lastName ? (
-              <p id="lastName-error" className="text-xs text-red-300">
+              <p id="lastName-error" className="text-xs text-red-400">
                 {errors.lastName.message}
               </p>
             ) : null}
           </div>
         </div>
         <div>
-            <label htmlFor="email" className="block text-sm font-medium text-slate-300">
+            <label htmlFor="email" className="block text-sm font-medium text-foreground-secondary">
               Email / Gmail <span className="text-red-400">*</span>
             </label>
             <div className="mt-1 relative">
@@ -158,7 +158,7 @@ export function RegisterForm({ onSubmit }: RegisterFormProps) {
                 id="email"
                 type="email"
                 autoComplete="email"
-                className={`block w-full appearance-none rounded-xl border bg-slate-950/50 px-4 py-3 placeholder-slate-500 shadow-sm transition-all focus:outline-none focus:ring-2 sm:text-sm ${
+                className={`block w-full appearance-none rounded-xl border bg-surface-elevated px-4 py-3 placeholder-slate-500 shadow-sm transition-all focus:outline-none focus:ring-1 sm:text-sm ${
                   errors.email
                     ? "border-red-400 focus:border-red-400 focus:ring-red-400/20"
                     : "border-slate-700 focus:border-cyan-400 focus:ring-cyan-400/20"
@@ -173,7 +173,7 @@ export function RegisterForm({ onSubmit }: RegisterFormProps) {
           </div>
 
           <div>
-            <label htmlFor="phone" className="block text-sm font-medium text-slate-300">
+            <label htmlFor="phone" className="block text-sm font-medium text-foreground-secondary">
               Telefon raqam <span className="text-red-400">*</span>
             </label>
             <div className="mt-1 relative">
@@ -181,7 +181,7 @@ export function RegisterForm({ onSubmit }: RegisterFormProps) {
                 id="phone"
                 type="tel"
                 autoComplete="tel"
-                className={`block w-full appearance-none rounded-xl border bg-slate-950/50 px-4 py-3 placeholder-slate-500 shadow-sm transition-all focus:outline-none focus:ring-2 sm:text-sm ${
+                className={`block w-full appearance-none rounded-xl border bg-surface-elevated px-4 py-3 placeholder-slate-500 shadow-sm transition-all focus:outline-none focus:ring-1 sm:text-sm ${
                   errors.phone
                     ? "border-red-400 focus:border-red-400 focus:ring-red-400/20"
                     : "border-slate-700 focus:border-cyan-400 focus:ring-cyan-400/20"
@@ -220,7 +220,7 @@ export function RegisterForm({ onSubmit }: RegisterFormProps) {
         <button
           type="submit"
           disabled={loading}
-          className="w-full rounded-full bg-gradient-to-r from-cyan-500 to-blue-600 px-6 py-3 text-sm font-semibold text-white transition-all hover:from-cyan-400 hover:to-blue-500 disabled:cursor-not-allowed disabled:opacity-70 shadow-lg shadow-cyan-500/50 hover:shadow-cyan-500/70 hover:scale-[1.02] premium-button"
+          className="w-full rounded-full bg-primary px-6 py-3 text-sm font-semibold text-foreground transition-all hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-70 shadow-lg shadow-primary/20 hover:shadow-primary/40 hover:-translate-y-0.5 hover:scale-[1.02] premium-button"
         >
           {loading ? "Creating account..." : "Create account"}
         </button>

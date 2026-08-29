@@ -16,8 +16,8 @@ export function Logo({ className, iconClassName, textClassName, showText = true,
   return (
     <Link
       href="/"
-      className={cn("flex items-center gap-3 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900 rounded-lg", className)}
-      aria-label="GoPay Home"
+      className={cn("flex items-center gap-3 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded-lg", className)}
+      aria-label="DocNova Home"
       {...props}
     >
       <motion.div
@@ -27,17 +27,17 @@ export function Logo({ className, iconClassName, textClassName, showText = true,
       >
         <div className="relative">
           {/* Glow effect */}
-          <div className="absolute inset-0 bg-gradient-to-br from-cyan-400 to-blue-600 blur-xl opacity-50 group-hover:opacity-70 transition-opacity" />
+          <div className="absolute inset-0 bg-primary blur-xl opacity-30 group-hover:opacity-50 transition-opacity" />
           
           {/* Logo container */}
-          <div className="relative flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-400 to-blue-600 shadow-lg shadow-cyan-500/50 group-hover:shadow-cyan-500/70 transition-shadow">
+          <div className="relative flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-accent shadow-lg shadow-primary/30 group-hover:shadow-primary/50 transition-shadow">
             <svg
               width="28"
               height="28"
               viewBox="0 0 28 28"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
-              className={cn("text-white", iconClassName)}
+              className={cn("text-primary-foreground", iconClassName)}
               aria-hidden="true"
             >
               {/* Document body with folded corner */}
@@ -74,12 +74,12 @@ export function Logo({ className, iconClassName, textClassName, showText = true,
       </motion.div>
       {showText && (
         <div className="flex flex-col">
-          <span className={cn("text-2xl font-bold bg-gradient-to-r from-cyan-400 via-blue-500 to-cyan-400 bg-clip-text text-transparent bg-[length:200%_auto] animate-gradient", textClassName)}>
-            GoPay
+          <span className={cn("text-2xl font-black tracking-tight text-foreground group-hover:text-primary transition-colors", textClassName)}>
+            DocNova
           </span>
-          {props['aria-label'] === 'GoPay Home' && (
-            <span className="text-[10px] font-medium text-cyan-400/80 tracking-wider uppercase">
-              AI Resume Builder
+          {props['aria-label'] === 'DocNova Home' && (
+            <span className="text-[10px] font-bold text-primary tracking-wider uppercase">
+              AI Tools Hub
             </span>
           )}
         </div>

@@ -15,10 +15,10 @@ export function AuthFooter({ prompt, linkHref, linkLabel }: AuthFooterProps) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ delay: 0.3 }}
-      className="text-center text-sm text-slate-400"
+      className="mt-6 text-center text-sm text-foreground-secondary"
     >
       {prompt}{" "}
-      <a href={linkHref} className="font-medium text-cyan-300 transition hover:text-cyan-200">
+      <a href={linkHref} className="font-semibold text-primary transition hover:text-primary/80">
         {linkLabel}
       </a>
     </motion.p>

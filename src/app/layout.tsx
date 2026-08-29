@@ -4,6 +4,11 @@ import "./globals.css";
 import { Navbar } from "@/components/layout/navbar";
 import { AuthSessionProvider } from "@/components/providers/session-provider";
 import { LanguageProvider } from "@/components/providers/language-provider";
+import { SubscriptionProvider } from "@/components/providers/subscription-provider";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth-options";
+import { getUserSubscription } from "@/lib/billing/subscription";
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -18,37 +23,43 @@ const geistMono = Geist_Mono({
 import { ThemeProvider } from "@/components/providers/theme-provider";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://gopay.example.com"),
+  metadataBase: new URL("https://DocNova.example.com"),
   title: {
-    default: "GoPay | AI-Powered Resume Builder",
-    template: "%s | GoPay",
+    default: "DocNova | AI-Powered Resume Builder",
+    template: "%s | DocNova",
   },
   description:
     "Create polished resumes with AI guidance, ATS-ready formatting, and export-ready templates.",
   keywords: ["resume builder", "AI resume", "ATS resume", "career tools"],
-  authors: [{ name: "GoPay" }],
+  authors: [{ name: "DocNova" }],
   openGraph: {
-    title: "GoPay | AI-Powered Resume Builder",
+    title: "DocNova | AI-Powered Resume Builder",
     description:
       "Create polished resumes with AI guidance, ATS-ready formatting, and export-ready templates.",
-    url: "https://gopay.example.com",
-    siteName: "GoPay",
+    url: "https://DocNova.example.com",
+    siteName: "DocNova",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "GoPay | AI-Powered Resume Builder",
+    title: "DocNova | AI-Powered Resume Builder",
     description:
       "Create polished resumes with AI guidance, ATS-ready formatting, and export-ready templates.",
   },
-  alternates: { canonical: "https://gopay.example.com" },
+  alternates: { canonical: "https://DocNova.example.com" },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await getServerSession(authOptions);
+  let subscription = undefined;
+  if (session?.user?.id) {
+    subscription = await getUserSubscription(session.user.id);
+  }
+
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`} suppressHydrationWarning>
       <body className="flex min-h-full flex-col">
@@ -59,10 +70,12 @@ export default function RootLayout({
           value={{ dark: "dark", light: "light" }}
         >
           <AuthSessionProvider>
-            <LanguageProvider>
-              <Navbar />
-              <main className="flex-1 pt-20">{children}</main>
-            </LanguageProvider>
+            <SubscriptionProvider initialData={subscription}>
+              <LanguageProvider>
+                <Navbar />
+                <main className="flex-1 pt-20">{children}</main>
+              </LanguageProvider>
+            </SubscriptionProvider>
           </AuthSessionProvider>
         </ThemeProvider>
       </body>

@@ -91,7 +91,7 @@ const translations = {
 
 export function AdminDashboard() {
   const { data: session } = useSession();
-  const router = useRouter();
+  const _router = useRouter();
   const [language, setLanguage] = useState<Language>("uz");
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [langDropdownOpen, setLangDropdownOpen] = useState(false);
@@ -135,9 +135,9 @@ export function AdminDashboard() {
   ];
 
   const statsData = [
-    { label: t.totalUsers, value: loading ? "..." : stats.totalUsers.toLocaleString(), icon: Users, color: "from-blue-500 to-cyan-500" },
+    { label: t.totalUsers, value: loading ? "..." : stats.totalUsers.toLocaleString(), icon: Users, color: "from-blue-500 to-primary" },
     { label: t.totalResumes, value: loading ? "..." : stats.totalResumes.toLocaleString(), icon: FileText, color: "from-purple-500 to-pink-500" },
-    { label: t.activeUsers, value: loading ? "..." : stats.activeUsers.toLocaleString(), icon: BarChart3, color: "from-green-500 to-emerald-500" },
+    { label: t.activeUsers, value: loading ? "..." : stats.activeUsers.toLocaleString(), icon: BarChart3, color: "from-green-500 to-primary" },
     { label: t.premiumUsers, value: loading ? "..." : stats.premiumUsers.toLocaleString(), icon: Shield, color: "from-orange-500 to-red-500" },
   ];
 
@@ -146,25 +146,25 @@ export function AdminDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
+    <div className="min-h-screen bg-background">
       {/* Sidebar */}
       <aside
-        className={`fixed inset-y-0 left-0 z-50 w-64 transform bg-slate-900/95 backdrop-blur-xl border-r border-white/10 transition-transform duration-300 ${
+        className={`fixed inset-y-0 left-0 z-50 w-64 transform bg-surface/95 backdrop-blur-xl border-r border-border transition-transform duration-300 ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         } md:translate-x-0`}
       >
         <div className="flex h-full flex-col">
           {/* Logo */}
-          <div className="flex items-center justify-between border-b border-white/10 px-6 py-4">
+          <div className="flex items-center justify-between border-b border-border px-6 py-4">
             <div className="flex items-center gap-2">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-400 to-blue-600">
-                <Shield className="h-6 w-6 text-white" />
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-blue-600">
+                <Shield className="h-6 w-6 text-foreground" />
               </div>
-              <span className="text-xl font-bold text-white">GoPay</span>
+              <span className="text-xl font-bold text-foreground">DocNova</span>
             </div>
             <button
               onClick={() => setSidebarOpen(false)}
-              className="md:hidden text-slate-400 hover:text-white"
+              className="md:hidden text-foreground-secondary hover:text-foreground"
             >
               <X className="h-6 w-6" />
             </button>
@@ -178,8 +178,8 @@ export function AdminDashboard() {
                 href={item.href}
                 className={`flex items-center gap-3 rounded-xl px-4 py-3 transition-all duration-200 ${
                   item.active
-                    ? "bg-gradient-to-r from-cyan-500/20 to-blue-500/20 text-cyan-300 shadow-lg shadow-cyan-500/10"
-                    : "text-slate-400 hover:bg-white/5 hover:text-white"
+                    ? "bg-gradient-to-r from-primary/20 to-blue-500/20 text-primary shadow-lg shadow-primary/10"
+                    : "text-foreground-secondary hover:bg-surface-elevated hover:text-foreground"
                 }`}
               >
                 <item.icon className="h-5 w-5" />
@@ -189,22 +189,22 @@ export function AdminDashboard() {
           </nav>
 
           {/* User Info & Logout */}
-          <div className="border-t border-white/10 p-4">
-            <div className="flex items-center gap-3 rounded-xl bg-white/5 p-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-cyan-400 to-blue-600 text-white font-semibold">
+          <div className="border-t border-border p-4">
+            <div className="flex items-center gap-3 rounded-xl bg-surface-elevated p-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-primary to-blue-600 text-foreground font-semibold">
                 {session?.user?.name?.[0] || "A"}
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-white truncate">
+                <p className="text-sm font-medium text-foreground truncate">
                   {session?.user?.name || "Admin"}
                 </p>
-                <p className="text-xs text-slate-400 truncate">{session?.user?.email}</p>
+                <p className="text-xs text-foreground-secondary truncate">{session?.user?.email}</p>
               </div>
             </div>
             <Button
               onClick={handleLogout}
               variant="ghost"
-              className="mt-2 w-full justify-start text-slate-400 hover:text-white hover:bg-white/5"
+              className="mt-2 w-full justify-start text-foreground-secondary hover:text-foreground hover:bg-surface-elevated"
             >
               <LogOut className="mr-2 h-4 w-4" />
               {t.logout}
@@ -216,23 +216,23 @@ export function AdminDashboard() {
       {/* Main Content */}
       <div className="md:ml-64">
         {/* Header */}
-        <header className="sticky top-0 z-40 border-b border-white/10 bg-slate-900/80 backdrop-blur-xl">
+        <header className="sticky top-0 z-40 border-b border-border bg-surface/80 backdrop-blur-xl">
           <div className="flex items-center justify-between px-6 py-4">
             <div className="flex items-center gap-4">
               <button
                 onClick={() => setSidebarOpen(true)}
-                className="md:hidden text-slate-400 hover:text-white"
+                className="md:hidden text-foreground-secondary hover:text-foreground"
               >
                 <Menu className="h-6 w-6" />
               </button>
-              <h1 className="text-2xl font-bold text-white">{t.dashboard}</h1>
+              <h1 className="text-2xl font-bold text-foreground">{t.dashboard}</h1>
             </div>
 
             {/* Language Selector */}
             <div className="relative">
               <button
                 onClick={() => setLangDropdownOpen(!langDropdownOpen)}
-                className="flex items-center gap-2 rounded-xl bg-white/5 px-4 py-2 text-sm font-medium text-white transition-all duration-200 hover:bg-white/10 hover:scale-105"
+                className="flex items-center gap-2 rounded-xl bg-surface-elevated px-4 py-2 text-sm font-medium text-foreground transition-all duration-200 hover:bg-surface-elevated hover:scale-105"
               >
                 <Globe className="h-4 w-4" />
                 <span>{languages.find((l) => l.code === language)?.flag}</span>
@@ -244,7 +244,7 @@ export function AdminDashboard() {
                 <motion.div
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="absolute right-0 mt-2 w-48 rounded-xl bg-slate-800 border border-white/10 shadow-2xl overflow-hidden"
+                  className="absolute right-0 mt-2 w-48 rounded-xl bg-surface border border-border shadow-2xl overflow-hidden"
                 >
                   {languages.map((lang) => (
                     <button
@@ -255,8 +255,8 @@ export function AdminDashboard() {
                       }}
                       className={`flex w-full items-center gap-3 px-4 py-3 text-sm transition-colors ${
                         language === lang.code
-                          ? "bg-cyan-500/20 text-cyan-300"
-                          : "text-slate-300 hover:bg-white/5"
+                          ? "bg-primary/20 text-primary"
+                          : "text-foreground-secondary hover:bg-surface-elevated"
                       }`}
                     >
                       <span className="text-lg">{lang.flag}</span>
@@ -285,11 +285,11 @@ export function AdminDashboard() {
                   <div className="relative">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="text-sm font-medium text-slate-400">{stat.label}</p>
-                        <p className="mt-2 text-3xl font-bold text-white">{stat.value}</p>
+                        <p className="text-sm font-medium text-foreground-secondary">{stat.label}</p>
+                        <p className="mt-2 text-3xl font-bold text-foreground">{stat.value}</p>
                       </div>
                       <div className={`flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br ${stat.color} shadow-lg`}>
-                        <stat.icon className="h-6 w-6 text-white" />
+                        <stat.icon className="h-6 w-6 text-foreground" />
                       </div>
                     </div>
                   </div>
@@ -304,27 +304,27 @@ export function AdminDashboard() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
           >
-            <Card className="border-white/10 bg-slate-900/80 backdrop-blur-xl p-6">
-              <h3 className="text-xl font-semibold text-white mb-4">{t.recentUsers}</h3>
+            <Card className="border-border bg-surface/80 backdrop-blur-xl p-6">
+              <h3 className="text-xl font-semibold text-foreground mb-4">{t.recentUsers}</h3>
               <div className="space-y-3">
                 {recentUsers.length > 0 ? recentUsers.map((user) => (
                   <div
                     key={user.id}
-                    className="flex items-center justify-between rounded-xl border border-white/10 bg-white/5 p-4 hover:bg-white/10 transition-colors duration-200"
+                    className="flex items-center justify-between rounded-xl border border-border bg-surface-elevated p-4 hover:bg-surface-elevated transition-colors duration-200"
                   >
                     <div className="flex items-center gap-3">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-cyan-400 to-blue-600 text-white font-semibold">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-primary to-blue-600 text-foreground font-semibold">
                         {user.name[0] || "U"}
                       </div>
                       <div>
-                        <p className="text-sm font-medium text-white">{user.name}</p>
-                        <p className="text-xs text-slate-400">{user.email}</p>
+                        <p className="text-sm font-medium text-foreground">{user.name}</p>
+                        <p className="text-xs text-foreground-secondary">{user.email}</p>
                       </div>
                     </div>
-                    <span className="text-xs text-slate-400">{user.createdAt}</span>
+                    <span className="text-xs text-foreground-secondary">{user.createdAt}</span>
                   </div>
                 )) : (
-                  <p className="text-slate-400 text-center py-8">Hozircha foydalanuvchilar yo'q</p>
+                  <p className="text-foreground-secondary text-center py-8">Hozircha foydalanuvchilar yo&apos;q</p>
                 )}
               </div>
             </Card>

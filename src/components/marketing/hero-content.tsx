@@ -34,7 +34,7 @@ export function HeroContent() {
       <motion.div variants={itemVariants}>
         <Badge variant="outline" className="px-4 py-1.5 text-sm border-cyan-400/30 bg-gradient-to-r from-cyan-500/10 to-blue-500/10 text-cyan-300 backdrop-blur-sm">
           <Sparkles className="h-3.5 w-3.5 mr-1.5" />
-          AI-Powered Resume Builder
+          AI Document Platform
         </Badge>
       </motion.div>
 
@@ -53,7 +53,7 @@ export function HeroContent() {
         variants={itemVariants}
         className="text-lg text-foreground-secondary leading-relaxed max-w-xl"
       >
-        Transform your career story into a stunning, ATS-optimized resume. GoPay leverages advanced AI to create recruiter-winning resumes in minutes, not hours.
+        Transform your career story into a stunning, ATS-optimized resume. DocNova leverages advanced AI to create recruiter-winning resumes in minutes, not hours.
       </motion.p>
 
       <motion.div variants={itemVariants} className="flex flex-wrap items-center gap-4 mt-2">

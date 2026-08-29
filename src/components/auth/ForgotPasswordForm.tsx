@@ -66,7 +66,7 @@ export function ForgotPasswordForm({ onSubmit, onBackToLogin }: ForgotPasswordFo
             <button
               type="button"
               onClick={onBackToLogin}
-              className="w-full rounded-full border border-white/10 bg-slate-950/60 px-6 py-3 text-sm font-medium text-white transition hover:border-white/20 hover:bg-slate-900/60"
+              className="w-full rounded-full border border-border bg-surface-elevated px-6 py-3 text-sm font-medium text-white transition hover:border-white/20 hover:bg-surface/60"
             >
               Back to login
             </button>
@@ -104,10 +104,10 @@ export function ForgotPasswordForm({ onSubmit, onBackToLogin }: ForgotPasswordFo
             {...register("email")}
             aria-invalid={Boolean(errors.email)}
             aria-describedby={errors.email ? "email-error" : undefined}
-            className={`w-full rounded-xl border bg-slate-950/60 px-4 py-3 text-sm text-white transition placeholder:text-slate-500 focus:ring-2 focus:outline-none ${
+            className={`w-full rounded-xl border bg-surface-elevated px-4 py-3 text-sm text-white transition placeholder:text-foreground-secondary focus:ring-2 focus:outline-none ${
               errors.email
                 ? "border-red-400/80 focus:border-red-300 focus:ring-red-500/40"
-                : "border-white/10 focus:border-cyan-400/80 focus:ring-cyan-500/40"
+                : "border-border focus:border-cyan-400/80 focus:ring-cyan-500/40"
             }`}
             placeholder="you@example.com"
           />

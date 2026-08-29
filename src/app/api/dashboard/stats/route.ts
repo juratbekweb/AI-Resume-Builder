@@ -36,56 +36,33 @@ export async function GET() {
     }
 
     // Get user's organization IDs
-    const organizationIds = user.organizations.map(org => org.organizationId);
+    const _organizationIds = user.organizations.map(org => org.organizationId);
 
-    // Fetch user-specific stats
+    // Fetch user-specific document stats
     const [totalResumes, drafts, published] = await Promise.all([
-      prisma.resume.count({
-        where: {
-          organizationId: {
-            in: organizationIds,
-          },
-        },
+      prisma.document.count({
+        where: { userId: session.user.id },
       }),
-      prisma.resume.count({
-        where: {
-          organizationId: {
-            in: organizationIds,
-          },
-          status: "DRAFT",
-        },
+      prisma.document.count({
+        where: { userId: session.user.id, status: "DRAFT" },
       }),
-      prisma.resume.count({
-        where: {
-          organizationId: {
-            in: organizationIds,
-          },
-          status: "PUBLISHED",
-        },
+      prisma.document.count({
+        where: { userId: session.user.id, status: "PUBLISHED" },
       }),
     ]);
 
-    // Fetch recent resumes for this user
-    const recentResumes = await prisma.resume.findMany({
-      where: {
-        organizationId: {
-          in: organizationIds,
-        },
-      },
-      include: {
-        personalInfo: true,
-      },
-      orderBy: {
-        updatedAt: "desc",
-      },
+    // Fetch recent documents for this user
+    const recentResumes = await prisma.document.findMany({
+      where: { userId: session.user.id },
+      orderBy: { updatedAt: "desc" },
       take: 4,
     });
 
-    const formattedResumes = recentResumes.map(resume => ({
-      id: resume.id,
-      title: resume.personalInfo?.fullName || resume.title || "Untitled Resume",
-      updated: formatTimeAgo(resume.updatedAt),
-      status: resume.status.toLowerCase(),
+    const formattedResumes = recentResumes.map((doc: { id: string; title: string; updatedAt: Date; status: string }) => ({
+      id: doc.id,
+      title: doc.title || "Untitled Document",
+      updated: formatTimeAgo(doc.updatedAt),
+      status: doc.status.toLowerCase(),
     }));
 
     return NextResponse.json({

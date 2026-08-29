@@ -7,6 +7,8 @@ interface RateLimitStore {
   };
 }
 
+const isDev = process.env.NODE_ENV === "development";
+
 class RateLimiter {
   private store: RateLimitStore = {};
   private readonly windowMs: number;
@@ -62,6 +64,12 @@ class RateLimiter {
   }
 
   middleware(request: NextRequest): NextResponse | null {
+    // Skip rate limiting entirely in development
+    if (isDev) return null;
+
+    // Skip GET requests — session checks should never be rate-limited
+    if (request.method === "GET") return null;
+
     const key = this.getKey(request);
 
     if (this.isLimited(key)) {
@@ -86,16 +94,15 @@ class RateLimiter {
       );
     }
 
-    // Return null to allow the request to proceed
-    // Rate limit headers are not supported in App Router route handlers
     return null;
   }
 }
 
 // Different rate limiters for different endpoints
-export const authRateLimiter = new RateLimiter(900000, 5); // 5 requests per 15 minutes
+export const authRateLimiter = new RateLimiter(900000, 5); // 5 POST requests per 15 minutes
 export const registerRateLimiter = new RateLimiter(3600000, 3); // 3 requests per hour
 export const passwordResetRateLimiter = new RateLimiter(3600000, 3); // 3 requests per hour
 export const generalRateLimiter = new RateLimiter(60000, 100); // 100 requests per minute
+export const aiDemoRateLimiter = new RateLimiter(60000, 5); // 5 requests per minute (public AI demo)
 
 export { RateLimiter };

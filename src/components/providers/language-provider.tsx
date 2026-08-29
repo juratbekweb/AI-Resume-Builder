@@ -15,7 +15,8 @@ export const translations = {
 
     // Feature pages - shared
     backToHome: "Bosh sahifaga qaytish",
-    goPayFeatures: "GoPay Xususiyatlari",
+    skipToContent: "Asosiy kontentga o'tish",
+    DocNovaFeatures: "DocNova Xususiyatlari",
 
     // AI Writing
     aiFeature: "AI Xususiyati",
@@ -116,7 +117,7 @@ export const translations = {
     heroTitle1: "Ajoyib rezumeni ",
     heroTitle2: "aniqlik, tezlik,",
     heroTitle3: " va ishonch bilan yarating.",
-    heroDesc: "GoPay sun'iy intellekt yordamini, ATSga tayyor formatlashni va mukammal shablonlarni birlashtiradi, shunda keyingi arizangizni topshirish osonlashadi.",
+    heroDesc: "DocNova sun'iy intellekt yordamini, ATSga tayyor formatlashni va mukammal shablonlarni birlashtiradi, shunda keyingi arizangizni topshirish osonlashadi.",
     startBuildingFree: "Bepul yaratishni boshlash",
     seeBuilderInAction: "Yaratuvchini amalda ko'ring",
     usedBy: "12,000+ ish qidiruvchilar tomonidan foydalaniladi",
@@ -167,7 +168,7 @@ export const translations = {
     closeBtn: "Yopish",
 
     checkoutTitle: "Xavfsiz To'lov",
-    checkoutDesc: "Rejangizni tanlang va qisqa fursatda GoPay'ning barcha premium imkoniyatlaridan foydalanishni boshlang.",
+    checkoutDesc: "Rejangizni tanlang va qisqa fursatda DocNova'ning barcha premium imkoniyatlaridan foydalanishni boshlang.",
     orderSummary: "Buyurtma tafsilotlari",
     paymentMethod: "To'lov usuli",
     cardNumber: "Karta raqami",
@@ -184,7 +185,7 @@ export const translations = {
     backToDashboard: "Boshqaruv paneliga qaytish",
 
     testimonialsTagline: "Tavsiyalar",
-    testimonialsTitle: "Odamlar bosim ostida aniqlik kerak bo'lganda GoPay'ga ishonishadi.",
+    testimonialsTitle: "Odamlar bosim ostida aniqlik kerak bo'lganda DocNova'ga ishonishadi.",
     testimonial1: "“Ko'rsatmalar tajribamni kuchli, zamonaviy rezumega aylantirishni osonlashtirdi.”",
     testimonial2: "“Men standart shablondan voz kechdim va har bir arizada o'zimga ko'proq ishonch hosil qildim.”",
 
@@ -195,7 +196,7 @@ export const translations = {
     ctaDesc: "Bepul yaratish bilan boshlang, sun'iy intellekt bilan takomillashtiring va keyingi imkoniyatga tayyor bo'lgan mukammal rezumeni eksport qiling.",
     getStartedToday: "Bugundan boshlang",
 
-    footerCopyright: "© 2026 GoPay. Keyingi bobiingizni yarating.",
+    footerCopyright: "© 2026 DocNova. Keyingi bobiingizni yarating.",
     footerFeatures: "Xususiyatlar",
     footerPricing: "Narxlar",
     footerFAQ: "TSS",
@@ -232,7 +233,7 @@ export const translations = {
     tplStartupOperator: "Startap Operatori",
     tplStartupOperatorDesc: "O'sish bosqichidagi kompaniyalar uchun moslashuvchan, tezkor dizaynlar.",
 
-    faq1Q: "GoPay birinchi marta rezume yozayotganlar uchun mos keladimi?",
+    faq1Q: "DocNova birinchi marta rezume yozayotganlar uchun mos keladimi?",
     faq1A: "Ha. Yo'naltirilgan yaratuvchi dizayn yoki yozish tajribasiga ehtiyoj sezmasdan birinchi rezumeyingizni yaratishni osonlashtiradi.",
     faq2Q: "Xuddi shu rezumeni turli rollar uchun moslashtira olamanmi?",
     faq2A: "Albatta. Siz har bir ariza uchun bo'limlarni nusxalashingiz va sozlashingiz yoki bitta ish stolida bir nechta versiyalarni saqlashingiz mumkin.",
@@ -246,7 +247,8 @@ export const translations = {
     adminPanel: "Панель администратора",
     logout: "Выйти",
     backToHome: "На главную",
-    goPayFeatures: "Функции GoPay",
+    skipToContent: "Перейти к содержимому",
+    DocNovaFeatures: "Функции DocNova",
     aiFeature: "AI Функция",
     aiWritingTitle: "Написание с помощью AI",
     aiWritingDesc: "Вставьте черновые заметки и позвольте AI превратить их в чёткие, персонализированные пункты резюме, которые впечатлят рекрутеров и пройдут ATS.",
@@ -335,7 +337,7 @@ export const translations = {
     heroTitle1: "Создайте выдающееся резюме с ",
     heroTitle2: "ясностью, скоростью",
     heroTitle3: " и уверенностью.",
-    heroDesc: "GoPay объединяет помощь ИИ, форматирование для ATS и идеальные шаблоны, чтобы ваша следующая заявка была успешной.",
+    heroDesc: "DocNova объединяет помощь ИИ, форматирование для ATS и идеальные шаблоны, чтобы ваша следующая заявка была успешной.",
     startBuildingFree: "Начать создание бесплатно",
     seeBuilderInAction: "Посмотреть конструктор в действии",
     usedBy: "Используется 12 000+ соискателями",
@@ -386,7 +388,7 @@ export const translations = {
     closeBtn: "Закрыть",
 
     checkoutTitle: "Безопасная оплата",
-    checkoutDesc: "Выберите свой план и начните пользоваться всеми премиум-функциями GoPay в кратчайшие сроки.",
+    checkoutDesc: "Выберите свой план и начните пользоваться всеми премиум-функциями DocNova в кратчайшие сроки.",
     orderSummary: "Детали заказа",
     paymentMethod: "Способ оплаты",
     cardNumber: "Номер карты",
@@ -403,7 +405,7 @@ export const translations = {
     backToDashboard: "Вернуться в панель",
 
     testimonialsTagline: "Отзывы",
-    testimonialsTitle: "Люди доверяют GoPay, когда им нужна ясность под давлением.",
+    testimonialsTitle: "Люди доверяют DocNova, когда им нужна ясность под давлением.",
     testimonial1: "«Руководство позволило легко преобразовать мой опыт в сильное, современное резюме.»",
     testimonial2: "«Я перешел с обычного шаблона и сразу почувствовал себя более уверенно в каждой заявке.»",
 
@@ -414,7 +416,7 @@ export const translations = {
     ctaDesc: "Начните с бесплатной версии, улучшите с помощью ИИ и экспортируйте безупречное резюме, готовое к новым возможностям.",
     getStartedToday: "Начните сегодня",
 
-    footerCopyright: "© 2026 GoPay. Создайте свою следующую главу.",
+    footerCopyright: "© 2026 DocNova. Создайте свою следующую главу.",
     footerFeatures: "Особенности",
     footerPricing: "Тарифы",
     footerFAQ: "FAQ",
@@ -451,7 +453,7 @@ export const translations = {
     tplStartupOperator: "Стартап-оператор",
     tplStartupOperatorDesc: "Гибкие, быстрые макеты для компаний на стадии роста.",
 
-    faq1Q: "Подходит ли GoPay для тех, кто пишет резюме впервые?",
+    faq1Q: "Подходит ли DocNova для тех, кто пишет резюме впервые?",
     faq1A: "Да. Конструктор позволяет легко создать первое резюме без опыта в дизайне или написании.",
     faq2Q: "Могу ли я адаптировать одно и то же резюме для разных ролей?",
     faq2A: "Конечно. Вы можете дублировать и настраивать разделы для каждой заявки или сохранять несколько версий.",
@@ -465,7 +467,8 @@ export const translations = {
     adminPanel: "Admin Panel",
     logout: "Logout",
     backToHome: "Back to home",
-    goPayFeatures: "GoPay Features",
+    skipToContent: "Skip to content",
+    DocNovaFeatures: "DocNova Features",
     aiFeature: "AI Feature",
     aiWritingTitle: "AI-Guided Writing",
     aiWritingDesc: "Paste your rough notes and let AI transform them into sharp, tailored resume bullet points that impress recruiters and pass ATS systems.",
@@ -550,11 +553,11 @@ export const translations = {
     original: "original",
     current: "current",
 
-    heroTagline: "AI-powered resume builder for ambitious professionals",
+    heroTagline: "AI-powered document platform for ambitious professionals",
     heroTitle1: "Build a standout resume with ",
     heroTitle2: "clarity, speed,",
     heroTitle3: " and confidence.",
-    heroDesc: "GoPay combines AI guidance, ATS-ready formatting, and polished templates so your next application feels effortless.",
+    heroDesc: "DocNova combines AI guidance, ATS-ready formatting, and polished templates so your next application feels effortless.",
     startBuildingFree: "Start building for free",
     seeBuilderInAction: "See the builder in action",
     usedBy: "Used by 12k+ job seekers",
@@ -605,7 +608,7 @@ export const translations = {
     closeBtn: "Close",
 
     checkoutTitle: "Secure Checkout",
-    checkoutDesc: "Complete your purchase and start using all GoPay premium features instantly.",
+    checkoutDesc: "Complete your purchase and start using all DocNova premium features instantly.",
     orderSummary: "Order Summary",
     paymentMethod: "Payment Method",
     cardNumber: "Card Number",
@@ -622,7 +625,7 @@ export const translations = {
     backToDashboard: "Back to dashboard",
 
     testimonialsTagline: "Testimonials",
-    testimonialsTitle: "People trust GoPay when they need clarity under pressure.",
+    testimonialsTitle: "People trust DocNova when they need clarity under pressure.",
     testimonial1: "“The guidance made it easy to translate my experience into a strong, modern resume.”",
     testimonial2: "“I switched from a generic template and felt immediately more confident in every application.”",
 
@@ -633,7 +636,7 @@ export const translations = {
     ctaDesc: "Start with a free build, refine with AI, and export a polished resume that feels ready for the next opportunity.",
     getStartedToday: "Get started today",
 
-    footerCopyright: "© 2026 GoPay. Build your next chapter.",
+    footerCopyright: "© 2026 DocNova. Build your next chapter.",
     footerFeatures: "Features",
     footerPricing: "Pricing",
     footerFAQ: "FAQ",
@@ -670,7 +673,7 @@ export const translations = {
     tplStartupOperator: "Startup Operator",
     tplStartupOperatorDesc: "Flexible, fast-moving layouts for growth-stage companies.",
 
-    faq1Q: "Is GoPay suitable for first-time resume writers?",
+    faq1Q: "Is DocNova suitable for first-time document creators?",
     faq1A: "Yes. The guided builder makes it easy to create your first resume without needing design or writing experience.",
     faq2Q: "Can I tailor the same resume for different roles?",
     faq2A: "Absolutely. You can duplicate and adjust sections for each application or save multiple versions in one workspace.",
@@ -684,7 +687,8 @@ export const translations = {
     adminPanel: "Yönetici paneli",
     logout: "Çıkış",
     backToHome: "Ana sayfaya dön",
-    goPayFeatures: "GoPay Özellikleri",
+    skipToContent: "İçeriğe geç",
+    DocNovaFeatures: "DocNova Özellikleri",
     aiFeature: "AI Özelliği",
     aiWritingTitle: "AI Destekli Yazım",
     aiWritingDesc: "Taslak notlarınızı yapıştırın ve AI'nın bunları işe alım uzmanlarını etkileyen ve ATS sistemlerinden geçen keskin, özelleştirilmiş özgeçmiş maddelerine dönüştürmesine izin verin.",
@@ -773,7 +777,7 @@ export const translations = {
     heroTitle1: "Öne çıkan bir özgeçmişi ",
     heroTitle2: "netlik, hız,",
     heroTitle3: " ve özgüvenle oluşturun.",
-    heroDesc: "GoPay, sonraki başvurunuzun zahmetsiz hissettirmesi için AI rehberliğini, ATS'ye hazır biçimlendirmeyi ve cilalı şablonları birleştirir.",
+    heroDesc: "DocNova, sonraki başvurunuzun zahmetsiz hissettirmesi için AI rehberliğini, ATS'ye hazır biçimlendirmeyi ve cilalı şablonları birleştirir.",
     startBuildingFree: "Ücretsiz oluşturmaya başlayın",
     seeBuilderInAction: "Oluşturucuyu iş başında görün",
     usedBy: "12,000'den fazla iş arayan tarafından kullanılıyor",
@@ -824,7 +828,7 @@ export const translations = {
     closeBtn: "Kapat",
 
     checkoutTitle: "Güvenli Ödeme",
-    checkoutDesc: "Satın alma işleminizi tamamlayın ve GoPay premium özelliklerini anında kullanmaya başlayın.",
+    checkoutDesc: "Satın alma işleminizi tamamlayın ve DocNova premium özelliklerini anında kullanmaya başlayın.",
     orderSummary: "Sipariş Özeti",
     paymentMethod: "Ödeme Yöntemi",
     cardNumber: "Kart Numarası",
@@ -841,7 +845,7 @@ export const translations = {
     backToDashboard: "Gösterge paneline dön",
 
     testimonialsTagline: "Görüşler",
-    testimonialsTitle: "İnsanlar baskı altında netliğe ihtiyaç duyduklarında GoPay'e güvenirler.",
+    testimonialsTitle: "İnsanlar baskı altında netliğe ihtiyaç duyduklarında DocNova'e güvenirler.",
     testimonial1: "“Rehberlik, deneyimimi güçlü, modern bir özgeçmişe dönüştürmeyi kolaylaştırdı.”",
     testimonial2: "“Genel bir şablondan geçiş yaptım ve her başvuruda hemen daha güvende hissettim.”",
 
@@ -852,7 +856,7 @@ export const translations = {
     ctaDesc: "Ücretsiz bir oluşturma ile başlayın, yapay zeka ile geliştirin ve bir sonraki fırsata hazır hisseden cilalı bir özgeçmişi dışa aktarın.",
     getStartedToday: "Bugün başlayın",
 
-    footerCopyright: "© 2026 GoPay. Bir sonraki bölümünüzü oluşturun.",
+    footerCopyright: "© 2026 DocNova. Bir sonraki bölümünüzü oluşturun.",
     footerFeatures: "Özellikler",
     footerPricing: "Fiyatlandırma",
     footerFAQ: "SSS",
@@ -889,7 +893,7 @@ export const translations = {
     tplStartupOperator: "Startup Operatörü",
     tplStartupOperatorDesc: "Büyüme aşamasındaki şirketler için esnek, hızlı hareket eden düzenler.",
 
-    faq1Q: "GoPay ilk kez özgeçmiş yazanlar için uygun mu?",
+    faq1Q: "DocNova ilk kez özgeçmiş yazanlar için uygun mu?",
     faq1A: "Evet. Rehberli oluşturucu, tasarım veya yazma deneyimine ihtiyaç duymadan ilk özgeçmişinizi oluşturmayı kolaylaştırır.",
     faq2Q: "Aynı özgeçmişi farklı roller için uyarlayabilir miyim?",
     faq2A: "Kesinlikle. Her uygulama için bölümleri çoğaltabilir ve ayarlayabilir veya birden fazla sürümü kaydedebilirsiniz.",
@@ -898,7 +902,7 @@ export const translations = {
   },
 } as const;
 
-type Translations = typeof translations.en;
+type Translations = { [K in keyof typeof translations.en]: string };
 
 interface LanguageContextType {
   lang: Lang;
@@ -916,13 +920,14 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const [lang, setLangState] = useState<Lang>("uz");
 
   useEffect(() => {
-    const saved = localStorage.getItem("gopay-lang") as Lang | null;
+    const saved = localStorage.getItem("DocNova-lang") as Lang | null;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (saved && translations[saved]) setLangState(saved);
   }, []);
 
   const setLang = (l: Lang) => {
     setLangState(l);
-    localStorage.setItem("gopay-lang", l);
+    localStorage.setItem("DocNova-lang", l);
   };
 
   return (

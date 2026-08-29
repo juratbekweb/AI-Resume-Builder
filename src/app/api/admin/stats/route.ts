@@ -9,6 +9,7 @@ type Session = {
     id: string;
     email?: string;
     name?: string;
+    role?: string;
   };
 };
 
@@ -37,7 +38,7 @@ export async function GET() {
       recentUsers,
     ] = await Promise.all([
       prisma.user.count(),
-      prisma.resume.count(),
+      prisma.document.count(),
       prisma.user.count({
         where: {
           sessions: {
@@ -78,7 +79,7 @@ export async function GET() {
       }),
     ]);
 
-    const formattedRecentUsers = recentUsers.map(user => ({
+    const formattedRecentUsers = recentUsers.map((user: { id: string; name: string | null; email: string | null; createdAt: Date }) => ({
       id: user.id,
       name: user.name || "Unknown",
       email: user.email || "No email",

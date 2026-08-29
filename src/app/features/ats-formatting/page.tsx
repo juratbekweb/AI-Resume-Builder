@@ -35,7 +35,7 @@ function CircularProgress({ score, size = 140, label }: { score: number; size?: 
         />
       </svg>
       <div className="absolute flex flex-col items-center">
-        <span className="text-3xl font-bold text-white">{animated}</span>
+        <span className="text-3xl font-bold text-foreground">{animated}</span>
         <span className="text-xs font-medium" style={{ color }}>{label}</span>
       </div>
     </div>
@@ -205,9 +205,9 @@ export default function ATSFormattingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 pb-20">
+    <div className="min-h-screen bg-transparent pb-20">
       {/* Hero */}
-      <div className="relative overflow-hidden border-b border-white/8">
+      <div className="relative overflow-hidden border-b border-border">
         <div className="pointer-events-none absolute inset-0">
           <div className="absolute left-1/3 top-0 h-64 w-64 rounded-full bg-violet-500/10 blur-3xl" />
         </div>
@@ -218,23 +218,23 @@ export default function ATSFormattingPage() {
             </div>
             <div>
               <div className="text-xs font-semibold uppercase tracking-widest text-violet-400">{t.atsFeature}</div>
-              <h1 className="text-2xl font-bold text-white">{t.atsTitle}</h1>
+              <h1 className="text-2xl font-bold text-foreground">{t.atsTitle}</h1>
             </div>
           </div>
-          <p className="text-slate-400 max-w-2xl">{t.atsDesc}</p>
+          <p className="text-foreground-secondary max-w-2xl">{t.atsDesc}</p>
         </div>
       </div>
 
       <div className="mx-auto max-w-7xl px-6 py-10 sm:px-8">
         <div className="grid gap-6 lg:grid-cols-2">
           {/* Input */}
-          <div className="rounded-2xl border border-white/10 bg-slate-900/60 p-6 backdrop-blur-sm">
+          <div className="rounded-2xl border border-border bg-surface-elevated p-6 backdrop-blur-sm">
             <div className="mb-4 flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <FileText className="h-4 w-4 text-violet-400" />
-                <span className="text-sm font-semibold text-white">{t.pasteResume}</span>
+                <span className="text-sm font-semibold text-foreground">{t.pasteResume}</span>
               </div>
-              <button onClick={handleSample} className="rounded-lg border border-white/10 px-3 py-1.5 text-xs text-slate-400 hover:border-white/20 hover:text-white transition-colors">
+              <button onClick={handleSample} className="rounded-lg border border-border px-3 py-1.5 text-xs text-foreground-secondary hover:border-white/20 hover:text-foreground transition-colors">
                 {t.useSample}
               </button>
             </div>
@@ -243,17 +243,17 @@ export default function ATSFormattingPage() {
               onChange={e => setResumeText(e.target.value)}
               placeholder={t.atsPlaceholder}
               rows={14}
-              className="w-full resize-none rounded-xl border border-white/10 bg-slate-800/60 px-4 py-3 text-sm text-white placeholder-slate-500 focus:border-violet-400/50 focus:outline-none focus:ring-1 focus:ring-violet-400/30"
+              className="w-full resize-none rounded-xl border border-border bg-surface-elevated px-4 py-3 text-sm text-foreground placeholder-slate-500 focus:border-violet-400/50 focus:outline-none focus:ring-1 focus:ring-violet-400/30"
             />
             <div className="mt-4 flex gap-3">
               <button
                 onClick={handleCheck}
                 disabled={!resumeText.trim() || isLoading}
-                className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-violet-500 to-purple-600 py-2.5 text-sm font-semibold text-white shadow-lg shadow-violet-500/30 hover:from-violet-400 hover:to-purple-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-violet-500 to-purple-600 py-2.5 text-sm font-semibold text-foreground shadow-lg shadow-violet-500/30 hover:from-violet-400 hover:to-purple-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
               >
                 {isLoading ? <span className="flex items-center gap-2"><RefreshCw className="h-4 w-4 animate-spin" /> {t.analyzing}</span> : <span className="flex items-center gap-2"><ShieldCheck className="h-4 w-4" /> {t.checkATS}</span>}
               </button>
-              <button onClick={handleReset} className="rounded-xl border border-white/10 px-4 py-2.5 text-sm text-slate-400 hover:text-white transition-colors">
+              <button onClick={handleReset} className="rounded-xl border border-border px-4 py-2.5 text-sm text-foreground-secondary hover:text-foreground transition-colors">
                 {t.reset}
               </button>
             </div>
@@ -262,18 +262,18 @@ export default function ATSFormattingPage() {
           {/* Results */}
           <div>
             {!showResults && !isLoading && (
-              <div className="flex h-full min-h-[300px] flex-col items-center justify-center rounded-2xl border border-white/10 bg-slate-900/40 text-center p-8">
-                <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-white/10 bg-slate-800/60 mb-4">
-                  <ShieldCheck className="h-8 w-8 text-slate-600" />
+              <div className="flex h-full min-h-[300px] flex-col items-center justify-center rounded-2xl border border-border bg-surface-elevated/40 text-center p-8">
+                <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-border bg-surface-elevated mb-4">
+                  <ShieldCheck className="h-8 w-8 text-foreground-secondary" />
                 </div>
-                <p className="text-slate-500 text-sm">{t.atsWaiting}</p>
+                <p className="text-foreground-secondary text-sm">{t.atsWaiting}</p>
               </div>
             )}
 
             {isLoading && (
-              <div className="flex h-full min-h-[300px] flex-col items-center justify-center rounded-2xl border border-white/10 bg-slate-900/60 gap-4">
+              <div className="flex h-full min-h-[300px] flex-col items-center justify-center rounded-2xl border border-border bg-surface-elevated gap-4">
                 <RefreshCw className="h-10 w-10 text-violet-400 animate-spin" />
-                <p className="text-slate-400 text-sm">{t.atsAnalyzing}</p>
+                <p className="text-foreground-secondary text-sm">{t.atsAnalyzing}</p>
               </div>
             )}
 
@@ -281,13 +281,13 @@ export default function ATSFormattingPage() {
               {showResults && (
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-4">
                   {/* Score card */}
-                  <div className="rounded-2xl border border-white/10 bg-slate-900/60 p-6 backdrop-blur-sm">
+                  <div className="rounded-2xl border border-border bg-surface-elevated p-6 backdrop-blur-sm">
                     <div className="flex items-center gap-6">
                       <CircularProgress score={score} label={t.needsWork} />
                       <div>
-                        <div className="mb-1 text-xs font-semibold uppercase tracking-widest text-slate-500">{t.atsScore}</div>
+                        <div className="mb-1 text-xs font-semibold uppercase tracking-widest text-foreground-secondary">{t.atsScore}</div>
                         <div className="text-2xl font-bold text-red-400">{t.needsWork}</div>
-                        <p className="mt-2 text-sm text-slate-400">{scoreDesc}</p>
+                        <p className="mt-2 text-sm text-foreground-secondary">{scoreDesc}</p>
                         <div className="mt-3 flex items-center gap-1.5 text-xs text-emerald-400">
                           <TrendingUp className="h-3.5 w-3.5" />
                           {t.potentialScore}: <span className="font-bold">87/100</span>
@@ -297,8 +297,8 @@ export default function ATSFormattingPage() {
                   </div>
 
                   {/* Keywords */}
-                  <div className="rounded-2xl border border-white/10 bg-slate-900/60 p-5 backdrop-blur-sm">
-                    <h3 className="mb-3 text-sm font-semibold text-white">{t.keywordAnalysis}</h3>
+                  <div className="rounded-2xl border border-border bg-surface-elevated p-5 backdrop-blur-sm">
+                    <h3 className="mb-3 text-sm font-semibold text-foreground">{t.keywordAnalysis}</h3>
                     <div className="flex flex-wrap gap-2">
                       {allKeywords.map(kw => (
                         <span key={kw.word} className={`rounded-full border px-3 py-1 text-xs font-medium flex items-center gap-1.5 ${
@@ -313,7 +313,7 @@ export default function ATSFormattingPage() {
 
                   {/* Issues */}
                   <div className="rounded-2xl border border-red-500/15 bg-red-500/5 p-5">
-                    <h3 className="mb-3 flex items-center gap-2 text-sm font-semibold text-white">
+                    <h3 className="mb-3 flex items-center gap-2 text-sm font-semibold text-foreground">
                       <XCircle className="h-4 w-4 text-red-400" /> {t.issuesFound} ({issues.length})
                     </h3>
                     <div className="space-y-2">
@@ -327,14 +327,14 @@ export default function ATSFormattingPage() {
                   </div>
 
                   {/* Suggestions */}
-                  <div className="rounded-2xl border border-cyan-400/15 bg-cyan-400/5 p-5">
-                    <h3 className="mb-3 flex items-center gap-2 text-sm font-semibold text-white">
-                      <Lightbulb className="h-4 w-4 text-cyan-400" /> {t.suggestions}
+                  <div className="rounded-2xl border border-primary/15 bg-primary/5 p-5">
+                    <h3 className="mb-3 flex items-center gap-2 text-sm font-semibold text-foreground">
+                      <Lightbulb className="h-4 w-4 text-primary" /> {t.suggestions}
                     </h3>
                     <div className="space-y-2">
                       {suggestions.map((s, i) => (
                         <div key={i} className="flex gap-2.5 text-sm text-slate-300">
-                          <CheckCircle className="mt-0.5 h-4 w-4 flex-shrink-0 text-cyan-400" />
+                          <CheckCircle className="mt-0.5 h-4 w-4 flex-shrink-0 text-primary" />
                           {s}
                         </div>
                       ))}

@@ -6,7 +6,12 @@ describe("auth config", () => {
     expect(authConfig.pages?.signIn).toBe("/login");
   });
 
-  it("exposes an empty provider list by default", () => {
-    expect(authConfig.providers).toEqual([]);
+  it("exposes OAuth providers (Google and GitHub)", () => {
+    // authConfig now includes Google and GitHub OAuth providers
+    expect(Array.isArray(authConfig.providers)).toBe(true);
+    expect(authConfig.providers.length).toBeGreaterThanOrEqual(2);
+    const providerIds = authConfig.providers.map((p: { id: string }) => p.id);
+    expect(providerIds).toContain("google");
+    expect(providerIds).toContain("github");
   });
 });

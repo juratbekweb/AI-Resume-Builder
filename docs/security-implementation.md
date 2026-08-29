@@ -1,4 +1,4 @@
-# GoPay Security Implementation
+# DocNova Security Implementation
 
 ## Premium-Level Security Features
 

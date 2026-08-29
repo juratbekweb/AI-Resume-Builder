@@ -11,12 +11,13 @@ export function ThemeToggle() {
 
   // useEffect only runs on the client, so now we can safely show the UI
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
   }, []);
 
   if (!mounted) {
     return (
-      <div className="h-10 w-10 rounded-full border border-white/10 bg-slate-900/50 backdrop-blur-xl" />
+      <div className="h-10 w-10 rounded-xl border border-border bg-surface" />
     );
   }
 
@@ -25,7 +26,7 @@ export function ThemeToggle() {
   return (
     <button
       onClick={() => setTheme(isDark ? "light" : "dark")}
-      className="relative flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-slate-900/50 text-slate-300 shadow-lg backdrop-blur-xl transition-all hover:text-white hover:shadow-cyan-500/20 premium-button"
+      className="relative flex h-10 w-10 items-center justify-center rounded-xl border border-border bg-surface text-foreground-secondary shadow-sm transition-all hover:bg-border/50 hover:text-foreground"
       aria-label="Toggle theme"
     >
       <motion.div

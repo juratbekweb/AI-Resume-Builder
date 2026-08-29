@@ -118,13 +118,14 @@ export async function recordSuccessfulLogin(email: string): Promise<void> {
   });
 }
 
-async function logSecurityEvent(userId: string, type: string, metadata: any): Promise<void> {
+async function logSecurityEvent(userId: string, type: string, metadata: Record<string, unknown>): Promise<void> {
   try {
     await prisma.securityEvent.create({
       data: {
         userId,
         type,
-        metadata,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        metadata: metadata as any,
       },
     });
   } catch (error) {

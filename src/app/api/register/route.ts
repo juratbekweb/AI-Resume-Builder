@@ -1,12 +1,13 @@
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 import { registerRateLimiter } from "@/lib/security/rate-limiter";
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
+  console.log("ROUTE HANDLER DB URL IS:", process.env.DATABASE_URL);
   try {
     // Rate limiting
-    const rateLimitResponse = registerRateLimiter.middleware(request as any);
+    const rateLimitResponse = registerRateLimiter.middleware(request);
     if (rateLimitResponse) {
       return rateLimitResponse;
     }
@@ -35,12 +36,23 @@ export async function POST(request: Request) {
     // Hash password with high cost factor for premium security
     const hashedPassword = await bcrypt.hash(password, 12);
 
-    // Create user
+    // Create user and a default Personal Organization
     const user = await prisma.user.create({
       data: {
         email,
         name,
         passwordHash: hashedPassword,
+        organizations: {
+          create: {
+            role: "OWNER",
+            organization: {
+              create: {
+                name: `${name}'s Personal Workspace`,
+                slug: `personal-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`
+              }
+            }
+          }
+        }
       },
       select: {
         id: true,

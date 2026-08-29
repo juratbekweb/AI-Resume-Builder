@@ -1,5 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
+  provider   = "prisma-client-js"
+  engineType = "library"
 }
 
 datasource db {
@@ -19,7 +20,8 @@ model Organization {
   deletedAt DateTime?
 
   users         OrganizationUser[]
-  resumes       Resume[]
+  folders       Folder[]
+  documents     Document[]
   subscriptions Subscription[]
 
   @@index([slug])
@@ -34,9 +36,25 @@ model User {
   phone         String?
   passwordHash  String?
   role          UserRole  @default(USER)
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  deletedAt     DateTime?
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+  deletedAt           DateTime?
+  lockedUntil         DateTime?
+  failedLoginAttempts Int       @default(0)
+
+  username            String?   @unique
+  displayName         String?
+  bio                 String?   @db.Text
+  country             String?
+  language            String?
+  theme               String?
+  timezone            String?
+  avatar              String?
+  lastLoginAt         DateTime?
+  lastSeenAt          DateTime?
+  twoFactorEnabled    Boolean   @default(false)
+  twoFactorSecret     String?
+  sessionVersion      Int       @default(0)
 
   accounts           Account[]
   sessions           Session[]
@@ -44,6 +62,16 @@ model User {
   auditLogs          AuditLog[]
   securityEvents     SecurityEvent[]
   emailVerifications EmailVerification[]
+  backupCodes        BackupRecoveryCode[]
+  
+  folders            Folder[]
+  documents          Document[]
+  activities         Activity[]
+  aiConversations    AIConversation[]
+  jobApplications    JobApplication[]
+  favoriteTools      UserFavoriteTool[]
+  recentTools        UserRecentTool[]
+  apiLimit           UserApiLimit?
 
   @@index([email])
   @@index([role])
@@ -52,6 +80,19 @@ model User {
 enum UserRole {
   ADMIN
   USER
+}
+
+model BackupRecoveryCode {
+  id        String   @id @default(cuid())
+  userId    String
+  code      String   @unique
+  used      Boolean  @default(false)
+  usedAt    DateTime?
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
 model OrganizationUser {
@@ -182,8 +223,185 @@ model SecurityEvent {
 }
 
 // -----------------------------------------------------------------------------
-// RESUME DOMAIN
+// DOCUMENT DOMAIN (Generic Document Engine)
 // -----------------------------------------------------------------------------
+
+model Folder {
+  id             String   @id @default(cuid())
+  name           String
+  parentId       String?
+  userId         String
+  organizationId String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  parent       Folder?  @relation("FolderToFolder", fields: [parentId], references: [id])
+  children     Folder[] @relation("FolderToFolder")
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  organization Organization? @relation(fields: [organizationId], references: [id])
+  documents    Document[]
+
+  @@index([userId])
+  @@index([organizationId])
+  @@index([parentId])
+}
+
+enum DocumentType {
+  RESUME
+  CV
+  COVER_LETTER
+  CONTRACT
+  CERTIFICATE
+  APPLICATION
+  REPORT
+}
+
+enum DocumentStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+model Document {
+  id             String         @id @default(cuid())
+  userId         String
+  organizationId String?
+  folderId       String?
+  type           DocumentType
+  title          String
+  slug           String         @unique
+  status         DocumentStatus @default(DRAFT)
+  templateId     String?
+  tags           String[]
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  deletedAt      DateTime?
+
+  user         User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  organization Organization?    @relation(fields: [organizationId], references: [id])
+  folder       Folder?          @relation(fields: [folderId], references: [id])
+  template     Template?        @relation(fields: [templateId], references: [id])
+
+  metadata     DocumentMetadata[]
+  sections     DocumentSection[]
+  versions     DocumentVersion[]
+  assets       DocumentAsset[]
+  shares       Share[]
+  activities   Activity[]
+  aiConversations AIConversation[]
+  jobApplications JobApplication[]
+
+  @@index([userId])
+  @@index([organizationId])
+  @@index([folderId])
+  @@index([type])
+  @@index([status])
+}
+
+model DocumentMetadata {
+  id         String   @id @default(cuid())
+  documentId String
+  key        String
+  value      Json
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  document Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  @@unique([documentId, key])
+  @@index([documentId])
+}
+
+model DocumentSection {
+  id         String   @id @default(cuid())
+  documentId String
+  type       String
+  title      String?
+  content    Json
+  sortOrder  Int      @default(0)
+  isVisible  Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  document Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  @@index([documentId])
+  @@index([sortOrder])
+}
+
+model DocumentVersion {
+  id         String   @id @default(cuid())
+  documentId String
+  version    Int
+  snapshot   Json
+  changeLog  String?
+  createdAt  DateTime @default(now())
+  createdBy  String?
+
+  document Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  scores   DocumentScore[]
+
+  @@unique([documentId, version])
+  @@index([documentId])
+}
+
+model DocumentAsset {
+  id         String   @id @default(cuid())
+  documentId String
+  url        String
+  type       String
+  size       Int
+  createdAt  DateTime @default(now())
+
+  document Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  @@index([documentId])
+}
+
+model Share {
+  id          String    @id @default(cuid())
+  documentId  String
+  token       String    @unique
+  permissions String    // "view", "edit", "comment"
+  expiresAt   DateTime?
+  createdAt   DateTime  @default(now())
+
+  document Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  @@index([documentId])
+  @@index([token])
+}
+
+model Activity {
+  id         String   @id @default(cuid())
+  documentId String
+  userId     String?
+  action     String
+  metadata   Json?
+  createdAt  DateTime @default(now())
+
+  document Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  user     User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([documentId])
+  @@index([userId])
+}
+
+model AIConversation {
+  id           String   @id @default(cuid())
+  documentId   String
+  userId       String
+  systemPrompt String?  @db.Text
+  messages     Json     // Chat history
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  document Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([documentId])
+  @@index([userId])
+}
 
 model Template {
   id           String   @id @default(cuid())
@@ -196,175 +414,10 @@ model Template {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
-  resumes Resume[]
+  documents    Document[]
 
   @@index([slug])
   @@index([category])
-}
-
-model Resume {
-  id             String       @id @default(cuid())
-  organizationId String
-  templateId     String?
-  title          String
-  slug           String       @unique
-  status         ResumeStatus @default(DRAFT)
-  createdAt      DateTime     @default(now())
-  updatedAt      DateTime     @updatedAt
-  deletedAt      DateTime?
-
-  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  template     Template?    @relation(fields: [templateId], references: [id])
-
-  personalInfo   PersonalInfo?
-  experiences    Experience[]
-  educations     Education[]
-  skills         Skill[]
-  projects       Project[]
-  certificates   Certificate[]
-  languages      Language[]
-  resumeScores   ResumeScore[]
-  customSections CustomSection[]
-
-  @@index([organizationId])
-  @@index([templateId])
-}
-
-enum ResumeStatus {
-  DRAFT
-  PUBLISHED
-  ARCHIVED
-}
-
-model PersonalInfo {
-  id       String  @id @default(cuid())
-  resumeId String  @unique
-  fullName String?
-  email    String?
-  phone    String?
-  location String?
-  website  String?
-  linkedin String?
-  github   String?
-  summary  String? @db.Text
-  photoUrl String?
-
-  resume Resume @relation(fields: [resumeId], references: [id], onDelete: Cascade)
-}
-
-model Experience {
-  id          String  @id @default(cuid())
-  resumeId    String
-  company     String
-  position    String
-  startDate   String?
-  endDate     String?
-  isCurrent   Boolean @default(false)
-  description String? @db.Text
-  sortOrder   Int     @default(0)
-
-  resume Resume @relation(fields: [resumeId], references: [id], onDelete: Cascade)
-
-  @@index([resumeId])
-}
-
-model Education {
-  id          String  @id @default(cuid())
-  resumeId    String
-  institution String
-  degree      String?
-  field       String?
-  startDate   String?
-  endDate     String?
-  gpa         String?
-  sortOrder   Int     @default(0)
-
-  resume Resume @relation(fields: [resumeId], references: [id], onDelete: Cascade)
-
-  @@index([resumeId])
-}
-
-model Skill {
-  id          String  @id @default(cuid())
-  resumeId    String
-  name        String
-  category    String?
-  proficiency Int? // 1-5 scale
-  sortOrder   Int     @default(0)
-
-  resume Resume @relation(fields: [resumeId], references: [id], onDelete: Cascade)
-
-  @@index([resumeId])
-}
-
-model Project {
-  id           String   @id @default(cuid())
-  resumeId     String
-  name         String
-  description  String?  @db.Text
-  url          String?
-  technologies String[]
-  sortOrder    Int      @default(0)
-
-  resume Resume @relation(fields: [resumeId], references: [id], onDelete: Cascade)
-
-  @@index([resumeId])
-}
-
-model Certificate {
-  id        String  @id @default(cuid())
-  resumeId  String
-  name      String
-  issuer    String
-  date      String?
-  url       String?
-  sortOrder Int     @default(0)
-
-  resume Resume @relation(fields: [resumeId], references: [id], onDelete: Cascade)
-
-  @@index([resumeId])
-}
-
-model Language {
-  id          String  @id @default(cuid())
-  resumeId    String
-  name        String
-  proficiency String?
-  sortOrder   Int     @default(0)
-
-  resume Resume @relation(fields: [resumeId], references: [id], onDelete: Cascade)
-
-  @@index([resumeId])
-}
-
-model CustomSection {
-  id          String @id @default(cuid())
-  resumeId    String
-  title       String
-  contentJson Json // Flexible payload for custom sections
-  sortOrder   Int    @default(0)
-
-  resume Resume @relation(fields: [resumeId], references: [id], onDelete: Cascade)
-
-  @@index([resumeId])
-}
-
-model ResumeScore {
-  id           String   @id @default(cuid())
-  resumeId     String
-  overallScore Int
-  grammar      Int
-  ats          Int
-  keywords     Int
-  formatting   Int
-  readability  Int
-  completeness Int
-  suggestions  Json // Array of actionable suggestions
-  createdAt    DateTime @default(now())
-
-  resume Resume @relation(fields: [resumeId], references: [id], onDelete: Cascade)
-
-  @@index([resumeId])
 }
 
 // -----------------------------------------------------------------------------
@@ -401,3 +454,100 @@ model Subscription {
   @@index([planId])
   @@index([stripeCustomerId])
 }
+
+// -----------------------------------------------------------------------------
+// JOB APPLICATIONS
+// -----------------------------------------------------------------------------
+
+model JobApplication {
+  id         String    @id @default(cuid())
+  userId     String
+  documentId String?
+  company    String
+  position   String
+  location   String?
+  jobUrl     String?   @db.Text
+  status     String    @default("Saved") // Saved, Applied, Interview, Offer, Rejected
+  appliedAt  DateTime?
+  notes      String?   @db.Text
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  document   Document? @relation(fields: [documentId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([documentId])
+  @@index([status])
+  @@index([appliedAt])
+}
+
+// -----------------------------------------------------------------------------
+// DOCUMENT SCORING
+// -----------------------------------------------------------------------------
+
+model DocumentScore {
+  id               String   @id @default(cuid())
+  versionId        String
+  overallScore     Int
+  atsScore         Int
+  contentScore     Int
+  keywordScore     Int
+  formattingScore  Int
+  readabilityScore Int
+  matchedKeywords  String[]
+  missingKeywords  String[]
+  recommendations  Json?
+  analysisContext  String?  @db.Text // e.g. job description hash
+  createdAt        DateTime @default(now())
+
+  version          DocumentVersion @relation(fields: [versionId], references: [id], onDelete: Cascade)
+
+  @@index([versionId])
+}
+
+
+// -----------------------------------------------------------------------------
+// TOOLS HUB MODELS
+// -----------------------------------------------------------------------------
+
+model UserFavoriteTool {
+  id        String   @id @default(cuid())
+  userId    String
+  toolId    String
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, toolId])
+  @@index([userId])
+}
+
+model UserRecentTool {
+  id         String   @id @default(cuid())
+  userId     String
+  toolId     String
+  title      String
+  subTitle   String?
+  route      String
+  lastUsedAt DateTime @default(now())
+
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, toolId])
+  @@index([userId])
+  @@index([lastUsedAt])
+}
+
+
+model UserApiLimit {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  count     Int      @default(0) // AI usages
+  pdfCount  Int      @default(0) // PDF tools usages
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+

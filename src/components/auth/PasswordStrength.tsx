@@ -47,7 +47,7 @@ export function PasswordStrength({ password }: PasswordStrengthProps) {
       animate={{ opacity: 1, height: "auto" }}
       className="space-y-1.5"
     >
-      <div className="h-1.5 w-full rounded-full bg-white/10">
+      <div className="h-1.5 w-full rounded-full bg-border">
         <motion.div
           initial={{ scaleX: 0 }}
           animate={{ scaleX: 1 }}
@@ -59,9 +59,9 @@ export function PasswordStrength({ password }: PasswordStrengthProps) {
       <motion.p
         initial={{ opacity: 0, y: -5 }}
         animate={{ opacity: 1, y: 0 }}
-        className="text-xs text-slate-400"
+        className="text-xs text-foreground-secondary"
       >
-        Password strength: <span className="text-white font-medium">{label}</span>
+        Password strength: <span className="text-foreground font-medium">{label}</span>
       </motion.p>
     </motion.div>
   );

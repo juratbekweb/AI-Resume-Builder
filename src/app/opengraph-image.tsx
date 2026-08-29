@@ -19,7 +19,7 @@ export default function Image() {
           padding: 48,
         }}
       >
-        GoPay
+        DocNova
       </div>
     ),
     {

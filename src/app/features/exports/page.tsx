@@ -1,8 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { motion } from 'motion/react';
-import { Download, FileText, Mail, Phone, User, Briefcase, Star, Printer, RefreshCw } from 'lucide-react';
+import { Download, User, Briefcase, Star, Printer, RefreshCw } from 'lucide-react';
 import { useLanguage } from '@/components/providers/language-provider';
 
 interface ResumeData {
@@ -38,7 +37,7 @@ export default function ExportsPage() {
   const [data, setData] = useState<ResumeData>(defaultData);
   const [isExporting, setIsExporting] = useState(false);
 
-  const update = (field: keyof ResumeData, value: any) => setData(prev => ({ ...prev, [field]: value }));
+  const update = (field: keyof ResumeData, value: string) => setData(prev => ({ ...prev, [field]: value }));
   const updateExp = (i: number, field: string, value: string) =>
     setData(prev => ({ ...prev, experience: prev.experience.map((e, idx) => idx === i ? { ...e, [field]: value } : e) }));
 
@@ -84,9 +83,9 @@ export default function ExportsPage() {
   return (
     <>
       <style>{`@media print { body > * { display: none !important; } #resume-preview { display: block !important; position: fixed; inset: 0; background: white; } }`}</style>
-      <div className="min-h-screen bg-slate-950 pb-20">
+      <div className="min-h-screen bg-transparent pb-20">
         {/* Hero */}
-        <div className="relative overflow-hidden border-b border-white/8">
+        <div className="relative overflow-hidden border-b border-border">
           <div className="pointer-events-none absolute inset-0">
             <div className="absolute right-1/3 top-0 h-64 w-64 rounded-full bg-emerald-500/10 blur-3xl" />
           </div>
@@ -97,13 +96,13 @@ export default function ExportsPage() {
               </div>
               <div>
                 <div className="text-xs font-semibold uppercase tracking-widest text-emerald-400">{t.exportFeature}</div>
-                <h1 className="text-2xl font-bold text-white">{t.exportTitle}</h1>
+                <h1 className="text-2xl font-bold text-foreground">{t.exportTitle}</h1>
               </div>
             </div>
-            <p className="text-slate-400 max-w-2xl">{t.exportDesc}</p>
+            <p className="text-foreground-secondary max-w-2xl">{t.exportDesc}</p>
             <div className="mt-4 flex gap-3">
               <button onClick={handlePDF} disabled={isExporting}
-                className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-emerald-500/30 hover:from-emerald-400 hover:to-teal-500 disabled:opacity-50 transition-all">
+                className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 px-5 py-2.5 text-sm font-semibold text-foreground shadow-lg shadow-emerald-500/30 hover:from-emerald-400 hover:to-teal-500 disabled:opacity-50 transition-all">
                 {isExporting ? (
                   <span className="flex items-center gap-2">
                     <RefreshCw className="h-4 w-4 animate-spin" /> {t.exportPDF}
@@ -126,71 +125,71 @@ export default function ExportsPage() {
           <div className="grid gap-8 lg:grid-cols-[1fr_1fr]">
             {/* Form */}
             <div className="space-y-4">
-              <div className="rounded-2xl border border-white/10 bg-slate-900/60 p-5 backdrop-blur-sm">
-                <div className="flex items-center gap-2 mb-4"><User className="h-4 w-4 text-emerald-400" /><span className="text-sm font-semibold text-white">{t.personalInfo}</span></div>
+              <div className="rounded-2xl border border-border bg-surface-elevated p-5 backdrop-blur-sm">
+                <div className="flex items-center gap-2 mb-4"><User className="h-4 w-4 text-emerald-400" /><span className="text-sm font-semibold text-foreground">{t.personalInfo}</span></div>
                 <div className="grid gap-3 sm:grid-cols-2">
                   {([['name', t.fullName, 'John Smith'],['title', t.jobTitle, 'Senior Engineer'],['email', t.email, 'john@example.com'],['phone', t.phone, '+1 555 000 0000'],['linkedin', 'LinkedIn', 'linkedin.com/in/...']] as const).map(([field, label, placeholder]) => (
                     <div key={field}>
-                      <label className="mb-1 block text-xs text-slate-500">{label}</label>
-                      <input value={(data as any)[field]} onChange={e => update(field as any, e.target.value)} placeholder={placeholder}
-                        className="w-full rounded-xl border border-white/10 bg-slate-800/60 px-3 py-2 text-sm text-white placeholder-slate-600 focus:border-emerald-400/50 focus:outline-none" />
+                      <label className="mb-1 block text-xs text-foreground-secondary">{label}</label>
+                      <input value={(data as unknown as Record<string, string>)[field]} onChange={e => update(field as keyof ResumeData, e.target.value)} placeholder={placeholder}
+                        className="w-full rounded-xl border border-border bg-surface-elevated px-3 py-2 text-sm text-foreground placeholder-slate-600 focus:border-emerald-400/50 focus:outline-none" />
                     </div>
                   ))}
                 </div>
                 <div className="mt-3">
-                  <label className="mb-1 block text-xs text-slate-500">{t.profSummary}</label>
+                  <label className="mb-1 block text-xs text-foreground-secondary">{t.profSummary}</label>
                   <textarea value={data.summary} onChange={e => update('summary', e.target.value)} rows={3}
-                    className="w-full resize-none rounded-xl border border-white/10 bg-slate-800/60 px-3 py-2 text-sm text-white placeholder-slate-600 focus:border-emerald-400/50 focus:outline-none" />
+                    className="w-full resize-none rounded-xl border border-border bg-surface-elevated px-3 py-2 text-sm text-foreground placeholder-slate-600 focus:border-emerald-400/50 focus:outline-none" />
                 </div>
               </div>
 
               {data.experience.map((exp, i) => (
-                <div key={i} className="rounded-2xl border border-white/10 bg-slate-900/60 p-5 backdrop-blur-sm">
-                  <div className="flex items-center gap-2 mb-3"><Briefcase className="h-4 w-4 text-emerald-400" /><span className="text-sm font-semibold text-white">{t.experience} {i + 1}</span></div>
+                <div key={i} className="rounded-2xl border border-border bg-surface-elevated p-5 backdrop-blur-sm">
+                  <div className="flex items-center gap-2 mb-3"><Briefcase className="h-4 w-4 text-emerald-400" /><span className="text-sm font-semibold text-foreground">{t.experience} {i + 1}</span></div>
                   <div className="grid gap-2 sm:grid-cols-3 mb-2">
-                    <div><label className="mb-1 block text-xs text-slate-500">{t.company}</label><input value={exp.company} onChange={e => updateExp(i,'company',e.target.value)} className="w-full rounded-xl border border-white/10 bg-slate-800/60 px-3 py-2 text-sm text-white focus:border-emerald-400/50 focus:outline-none" /></div>
-                    <div><label className="mb-1 block text-xs text-slate-500">{t.role}</label><input value={exp.role} onChange={e => updateExp(i,'role',e.target.value)} className="w-full rounded-xl border border-white/10 bg-slate-800/60 px-3 py-2 text-sm text-white focus:border-emerald-400/50 focus:outline-none" /></div>
-                    <div><label className="mb-1 block text-xs text-slate-500">{t.period}</label><input value={exp.period} onChange={e => updateExp(i,'period',e.target.value)} className="w-full rounded-xl border border-white/10 bg-slate-800/60 px-3 py-2 text-sm text-white focus:border-emerald-400/50 focus:outline-none" /></div>
+                    <div><label className="mb-1 block text-xs text-foreground-secondary">{t.company}</label><input value={exp.company} onChange={e => updateExp(i,'company',e.target.value)} className="w-full rounded-xl border border-border bg-surface-elevated px-3 py-2 text-sm text-foreground focus:border-emerald-400/50 focus:outline-none" /></div>
+                    <div><label className="mb-1 block text-xs text-foreground-secondary">{t.role}</label><input value={exp.role} onChange={e => updateExp(i,'role',e.target.value)} className="w-full rounded-xl border border-border bg-surface-elevated px-3 py-2 text-sm text-foreground focus:border-emerald-400/50 focus:outline-none" /></div>
+                    <div><label className="mb-1 block text-xs text-foreground-secondary">{t.period}</label><input value={exp.period} onChange={e => updateExp(i,'period',e.target.value)} className="w-full rounded-xl border border-border bg-surface-elevated px-3 py-2 text-sm text-foreground focus:border-emerald-400/50 focus:outline-none" /></div>
                   </div>
                   <textarea value={exp.bullets} onChange={e => updateExp(i,'bullets',e.target.value)} rows={3}
-                    className="w-full resize-none rounded-xl border border-white/10 bg-slate-800/60 px-3 py-2 text-sm text-white focus:border-emerald-400/50 focus:outline-none" />
+                    className="w-full resize-none rounded-xl border border-border bg-surface-elevated px-3 py-2 text-sm text-foreground focus:border-emerald-400/50 focus:outline-none" />
                 </div>
               ))}
 
-              <div className="rounded-2xl border border-white/10 bg-slate-900/60 p-5 backdrop-blur-sm">
-                <div className="flex items-center gap-2 mb-3"><Star className="h-4 w-4 text-emerald-400" /><span className="text-sm font-semibold text-white">{t.skillsEdu}</span></div>
+              <div className="rounded-2xl border border-border bg-surface-elevated p-5 backdrop-blur-sm">
+                <div className="flex items-center gap-2 mb-3"><Star className="h-4 w-4 text-emerald-400" /><span className="text-sm font-semibold text-foreground">{t.skillsEdu}</span></div>
                 <div className="space-y-3">
-                  <div><label className="mb-1 block text-xs text-slate-500">{t.skills}</label><input value={data.skills} onChange={e => update('skills', e.target.value)} className="w-full rounded-xl border border-white/10 bg-slate-800/60 px-3 py-2 text-sm text-white focus:border-emerald-400/50 focus:outline-none" /></div>
-                  <div><label className="mb-1 block text-xs text-slate-500">{t.education}</label><input value={data.education} onChange={e => update('education', e.target.value)} className="w-full rounded-xl border border-white/10 bg-slate-800/60 px-3 py-2 text-sm text-white focus:border-emerald-400/50 focus:outline-none" /></div>
+                  <div><label className="mb-1 block text-xs text-foreground-secondary">{t.skills}</label><input value={data.skills} onChange={e => update('skills', e.target.value)} className="w-full rounded-xl border border-border bg-surface-elevated px-3 py-2 text-sm text-foreground focus:border-emerald-400/50 focus:outline-none" /></div>
+                  <div><label className="mb-1 block text-xs text-foreground-secondary">{t.education}</label><input value={data.education} onChange={e => update('education', e.target.value)} className="w-full rounded-xl border border-border bg-surface-elevated px-3 py-2 text-sm text-foreground focus:border-emerald-400/50 focus:outline-none" /></div>
                 </div>
               </div>
             </div>
 
             {/* Preview */}
-            <div id="resume-preview" className="rounded-2xl border border-white/10 bg-white p-8 text-slate-900 shadow-2xl print:rounded-none print:border-0 print:shadow-none">
+            <div id="resume-preview" className="rounded-2xl border border-border bg-white p-8 text-slate-900 shadow-2xl print:rounded-none print:border-0 print:shadow-none">
               <div className="border-b-2 border-slate-200 pb-4 mb-4">
                 <h2 className="text-2xl font-bold text-slate-900 print:text-black">{data.name}</h2>
                 <p className="text-base font-semibold text-cyan-700">{data.title}</p>
-                <div className="mt-1 flex flex-wrap gap-3 text-xs text-slate-500">
+                <div className="mt-1 flex flex-wrap gap-3 text-xs text-foreground-secondary">
                   <span>{data.email}</span><span>•</span><span>{data.phone}</span><span>•</span><span>{data.linkedin}</span>
                 </div>
               </div>
-              {data.summary && <><div className="mb-3"><h3 className="mb-1 text-xs font-bold uppercase tracking-widest text-slate-400">{t.summary}</h3><p className="text-sm text-slate-700 leading-6">{data.summary}</p></div></>}
+              {data.summary && <><div className="mb-3"><h3 className="mb-1 text-xs font-bold uppercase tracking-widest text-foreground-secondary">{t.summary}</h3><p className="text-sm text-slate-700 leading-6">{data.summary}</p></div></>}
               <div className="mb-3">
-                <h3 className="mb-2 text-xs font-bold uppercase tracking-widest text-slate-400">{t.experience}</h3>
+                <h3 className="mb-2 text-xs font-bold uppercase tracking-widest text-foreground-secondary">{t.experience}</h3>
                 {data.experience.map((exp, i) => (
                   <div key={i} className="mb-3">
                     <div className="flex items-baseline justify-between">
                       <span className="font-semibold text-sm text-slate-900">{exp.role}</span>
-                      <span className="text-xs text-slate-400">{exp.period}</span>
+                      <span className="text-xs text-foreground-secondary">{exp.period}</span>
                     </div>
                     <div className="text-xs font-medium text-cyan-700 mb-1">{exp.company}</div>
-                    <pre className="whitespace-pre-wrap text-xs text-slate-600 leading-5">{exp.bullets}</pre>
+                    <pre className="whitespace-pre-wrap text-xs text-foreground-secondary leading-5">{exp.bullets}</pre>
                   </div>
                 ))}
               </div>
-              {data.skills && <div className="mb-3"><h3 className="mb-1 text-xs font-bold uppercase tracking-widest text-slate-400">{t.skillsTab}</h3><p className="text-sm text-slate-700">{data.skills}</p></div>}
-              {data.education && <div><h3 className="mb-1 text-xs font-bold uppercase tracking-widest text-slate-400">{t.education}</h3><p className="text-sm text-slate-700">{data.education}</p></div>}
+              {data.skills && <div className="mb-3"><h3 className="mb-1 text-xs font-bold uppercase tracking-widest text-foreground-secondary">{t.skillsTab}</h3><p className="text-sm text-slate-700">{data.skills}</p></div>}
+              {data.education && <div><h3 className="mb-1 text-xs font-bold uppercase tracking-widest text-foreground-secondary">{t.education}</h3><p className="text-sm text-slate-700">{data.education}</p></div>}
             </div>
           </div>
         </div>

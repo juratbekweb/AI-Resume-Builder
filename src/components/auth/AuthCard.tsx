@@ -13,7 +13,7 @@ export function AuthCard({ children }: AuthCardProps) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="mx-auto w-full max-w-md rounded-3xl border border-white/10 bg-slate-900/80 backdrop-blur-xl p-8 shadow-2xl premium-card sm:p-10"
+      className="mx-auto w-full max-w-md rounded-[2rem] border border-border bg-surface-elevated/50 backdrop-blur-3xl p-8 shadow-2xl premium-card sm:p-10"
     >
       {children}
     </motion.div>

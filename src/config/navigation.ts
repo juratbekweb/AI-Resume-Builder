@@ -5,16 +5,16 @@ export interface NavItem {
 
 export const mainNavConfig: NavItem[] = [
   {
-    title: "Features",
-    href: "/#features",
+    title: "Asboblar (Tools)",
+    href: "/tools",
   },
   {
-    title: "Templates",
-    href: "/#templates",
+    title: "Shablonlar",
+    href: "/dashboard/templates",
   },
   {
-    title: "Pricing",
-    href: "/#pricing",
+    title: "Tariflar",
+    href: "/pricing",
   },
   {
     title: "FAQ",

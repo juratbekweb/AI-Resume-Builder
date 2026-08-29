@@ -47,7 +47,7 @@ export function RememberMe({ checked, onChange }: RememberMeProps) {
           </motion.svg>
         </motion.div>
       </div>
-      <label htmlFor="rememberMe" className="text-sm text-slate-300 cursor-pointer">
+      <label htmlFor="rememberMe" className="text-sm text-foreground-secondary cursor-pointer hover:text-foreground transition-colors">
         Remember me
       </label>
     </motion.div>

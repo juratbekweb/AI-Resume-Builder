@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { GitBranch, Clock, Eye, GitCompare, ChevronRight, Check, Plus, RotateCcw } from 'lucide-react';
+import { GitBranch, Clock, GitCompare, ChevronRight, Check, Plus, RotateCcw } from 'lucide-react';
 import { useLanguage } from '@/components/providers/language-provider';
 
 const versions = [
@@ -27,9 +27,9 @@ export default function VersionsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 pb-20">
+    <div className="min-h-screen bg-transparent pb-20">
       {/* Hero */}
-      <div className="relative overflow-hidden border-b border-white/8">
+      <div className="relative overflow-hidden border-b border-border">
         <div className="pointer-events-none absolute inset-0"><div className="absolute right-1/3 top-0 h-64 w-64 rounded-full bg-blue-500/10 blur-3xl" /></div>
         <div className="relative mx-auto max-w-7xl px-6 py-12 sm:px-8">
           <div className="flex items-center gap-3 mb-4">
@@ -38,19 +38,19 @@ export default function VersionsPage() {
             </div>
             <div>
               <div className="text-xs font-semibold uppercase tracking-widest text-blue-400">{t.versionsFeature}</div>
-              <h1 className="text-2xl font-bold text-white">{t.versionsTitle}</h1>
+              <h1 className="text-2xl font-bold text-foreground">{t.versionsTitle}</h1>
             </div>
           </div>
-          <p className="text-slate-400 max-w-2xl">{t.versionsDesc}</p>
+          <p className="text-foreground-secondary max-w-2xl">{t.versionsDesc}</p>
         </div>
       </div>
 
       <div className="mx-auto max-w-7xl px-6 py-10 sm:px-8">
         <div className="grid gap-6 lg:grid-cols-[300px_1fr]">
           {/* Timeline */}
-          <div className="rounded-2xl border border-white/10 bg-slate-900/60 p-4 backdrop-blur-sm">
+          <div className="rounded-2xl border border-border bg-surface-elevated p-4 backdrop-blur-sm">
             <div className="mb-4 flex items-center justify-between">
-              <span className="text-sm font-semibold text-white">{t.allVersions}</span>
+              <span className="text-sm font-semibold text-foreground">{t.allVersions}</span>
               <button className="flex items-center gap-1.5 rounded-lg bg-blue-500/15 border border-blue-400/30 px-2.5 py-1.5 text-xs font-medium text-blue-300 hover:bg-blue-500/25 transition-colors">
                 <span className="flex items-center gap-1.5"><Plus className="h-3.5 w-3.5" /> {t.saveNow}</span>
               </button>
@@ -61,24 +61,24 @@ export default function VersionsPage() {
                 {[...versions].reverse().map(v => (
                   <button key={v.id} onClick={() => setSelected(v.id)}
                     className={`relative w-full rounded-xl p-3 text-left transition-all ${
-                      selected === v.id ? 'bg-blue-500/15 border border-blue-400/20' : 'hover:bg-white/5 border border-transparent'
+                      selected === v.id ? 'bg-blue-500/15 border border-blue-400/20' : 'hover:bg-surface border border-transparent'
                     }`}>
                     <div className="flex items-start gap-3">
                       <div className={`relative z-10 mt-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full text-xs font-bold ${
-                        v.badge === 'current' ? 'bg-blue-500 text-white' : v.badge === 'original' ? 'bg-slate-600 text-slate-200' : 'border border-white/20 bg-slate-800 text-slate-400'
+                        v.badge === 'current' ? 'bg-blue-500 text-foreground' : v.badge === 'original' ? 'bg-slate-600 text-foreground' : 'border border-white/20 bg-surface-elevated text-foreground-secondary'
                       }`}>
                         {v.badge === 'current' ? <Check className="h-3 w-3" /> : v.label.split('v')[1]}
                       </div>
                       <div className="min-w-0 flex-1">
                         <div className="flex items-center gap-1.5">
-                          <span className="text-sm font-medium text-white truncate">{v.title}</span>
+                          <span className="text-sm font-medium text-foreground truncate">{v.title}</span>
                           {v.badge && (
                             <span className={`rounded-full px-1.5 py-0.5 text-[10px] font-semibold ${
-                              v.badge === 'current' ? 'bg-blue-400/15 text-blue-300' : 'bg-slate-500/20 text-slate-400'
+                              v.badge === 'current' ? 'bg-blue-400/15 text-blue-300' : 'bg-slate-500/20 text-foreground-secondary'
                             }`}>{v.badge}</span>
                           )}
                         </div>
-                        <div className="flex items-center gap-1.5 mt-0.5 text-xs text-slate-500">
+                        <div className="flex items-center gap-1.5 mt-0.5 text-xs text-foreground-secondary">
                           <Clock className="h-3 w-3" />{v.date} · {v.changes} changes
                         </div>
                       </div>
@@ -92,40 +92,40 @@ export default function VersionsPage() {
           {/* Detail panel */}
           <div className="space-y-4">
             <AnimatePresence mode="wait">
-              <motion.div key={selected} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="rounded-2xl border border-white/10 bg-slate-900/60 p-6 backdrop-blur-sm">
+              <motion.div key={selected} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="rounded-2xl border border-border bg-surface-elevated p-6 backdrop-blur-sm">
                 <div className="mb-5 flex items-start justify-between">
                   <div>
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="text-lg font-bold text-white">{selectedVer.title}</span>
-                      <span className="rounded-full border border-white/10 px-2 py-0.5 text-xs text-slate-400">{selectedVer.label}</span>
+                      <span className="text-lg font-bold text-foreground">{selectedVer.title}</span>
+                      <span className="rounded-full border border-border px-2 py-0.5 text-xs text-foreground-secondary">{selectedVer.label}</span>
                     </div>
-                    <div className="flex items-center gap-2 text-sm text-slate-400">
+                    <div className="flex items-center gap-2 text-sm text-foreground-secondary">
                       <Clock className="h-3.5 w-3.5" />{selectedVer.date} at {selectedVer.time} · {selectedVer.changes} changes
                     </div>
                   </div>
                   <div className="flex gap-2">
                     <button onClick={() => setComparing(comparing === selected ? null : selected === 4 ? 3 : 4)}
                       className={`flex items-center gap-1.5 rounded-xl border px-3 py-2 text-xs font-medium transition-all ${
-                        comparing ? 'border-blue-400/40 bg-blue-400/15 text-blue-300' : 'border-white/10 text-slate-400 hover:text-white'
+                        comparing ? 'border-blue-400/40 bg-blue-400/15 text-blue-300' : 'border-border text-foreground-secondary hover:text-foreground'
                       }`}>
                       <span className="flex items-center gap-1.5"><GitCompare className="h-3.5 w-3.5" /> {comparing ? t.stopCompare : t.compare}</span>
                     </button>
                     {selectedVer.badge !== 'current' && (
                       <button onClick={() => handleRestore(selectedVer.id)}
-                        className="flex items-center gap-1.5 rounded-xl border border-white/10 px-3 py-2 text-xs font-medium text-slate-400 hover:text-white transition-colors">
+                        className="flex items-center gap-1.5 rounded-xl border border-border px-3 py-2 text-xs font-medium text-foreground-secondary hover:text-foreground transition-colors">
                         {restored === selectedVer.id ? <span className="flex items-center gap-1.5"><Check className="h-3.5 w-3.5 text-emerald-400" />{t.restored}</span> : <span className="flex items-center gap-1.5"><RotateCcw className="h-3.5 w-3.5" />{t.restore}</span>}
                       </button>
                     )}
                   </div>
                 </div>
 
-                <div className="mb-4 rounded-xl border border-white/8 bg-slate-800/40 p-4">
+                <div className="mb-4 rounded-xl border border-border bg-surface-elevated/40 p-4">
                   <p className="text-sm font-semibold text-slate-300 mb-1">{t.snapshot}</p>
-                  <p className="text-sm text-slate-400">{selectedVer.content}</p>
+                  <p className="text-sm text-foreground-secondary">{selectedVer.content}</p>
                 </div>
 
                 <div>
-                  <p className="text-xs font-semibold uppercase tracking-widest text-slate-500 mb-3">{t.changesIn}</p>
+                  <p className="text-xs font-semibold uppercase tracking-widest text-foreground-secondary mb-3">{t.changesIn}</p>
                   <div className="space-y-2">
                     {selectedVer.bullets.map((b, i) => (
                       <div key={i} className="flex items-center gap-2.5 text-sm">
@@ -145,15 +145,15 @@ export default function VersionsPage() {
                   className="rounded-2xl border border-blue-400/20 bg-blue-500/5 p-6 backdrop-blur-sm overflow-hidden">
                   <div className="mb-4 flex items-center gap-2">
                     <GitCompare className="h-4 w-4 text-blue-400" />
-                    <span className="text-sm font-semibold text-white">{t.comparingWith} {compareVer.title} ({compareVer.label})</span>
+                    <span className="text-sm font-semibold text-foreground">{t.comparingWith} {compareVer.title} ({compareVer.label})</span>
                   </div>
                   <div className="grid gap-4 sm:grid-cols-2">
-                    <div className="rounded-xl bg-slate-800/60 p-4">
-                      <p className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-2">{selectedVer.label}</p>
+                    <div className="rounded-xl bg-surface-elevated p-4">
+                      <p className="text-xs font-bold uppercase tracking-widest text-foreground-secondary mb-2">{selectedVer.label}</p>
                       <p className="text-sm text-slate-300">{selectedVer.content}</p>
                     </div>
-                    <div className="rounded-xl bg-slate-800/60 p-4">
-                      <p className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-2">{compareVer.label}</p>
+                    <div className="rounded-xl bg-surface-elevated p-4">
+                      <p className="text-xs font-bold uppercase tracking-widest text-foreground-secondary mb-2">{compareVer.label}</p>
                       <p className="text-sm text-slate-300">{compareVer.content}</p>
                     </div>
                   </div>
